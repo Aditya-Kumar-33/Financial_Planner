@@ -1,4 +1,4 @@
-const calculateRequiredInvestment = ({ 
+export const calculateRequiredInvestment = ({ 
     pattern, // "weekly", "monthly", or "yearly"
     targetAmount, // Desired final amount after duration
     stepUpPercentage, // Percentage increase in investment annually
@@ -18,21 +18,15 @@ const calculateRequiredInvestment = ({
         let principalInvested = 0;
         let currentInvestment = mid;
 
-        //bs
         for (let year = 1; year <= years; year++) {
             for (let i = 0; i < n; i++) {
                 totalAmount += currentInvestment;
                 principalInvested += currentInvestment;
             }
 
-            // Apply expected return rate (compounded annually)
-            totalAmount *= (1 + returnRate / 100);
-
-            // Increase investment amount by step-up percentage for the next year
-            currentInvestment += (currentInvestment * stepUpPercentage) / 100;
-
-            // Adjust for inflation
-            totalAmount /= (1 + inflationRate / 100);
+            totalAmount *= (1 + returnRate / 100); // Apply expected return rate
+            currentInvestment += (currentInvestment * stepUpPercentage) / 100; // Step-up investment
+            totalAmount /= (1 + inflationRate / 100); // Adjust for inflation
         }
 
         if (totalAmount >= targetAmount) {

@@ -18,6 +18,17 @@ const DonutChart = ({ principal, returns, total }) => {
         innerRadius={75} // Creates the hole (donut effect)
         outerRadius={120} // Controls the size of the chart
         fill="#8884d8"
+        label={({ value, cx, cy, midAngle, outerRadius }) => {
+          // Calculate label position
+          const RADIAN = Math.PI / 180;
+          const x = cx + (outerRadius + 50) * Math.cos(-midAngle * RADIAN);
+          const y = cy + (outerRadius + 50) * Math.sin(-midAngle * RADIAN);
+          return (
+            <text x={x} y={y} textAnchor="middle" fontSize={14} fontWeight="bold" fill="#333">
+              ₹{value}
+            </text>
+          );
+        }}
       >
         {data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={entry.color} />
@@ -25,16 +36,14 @@ const DonutChart = ({ principal, returns, total }) => {
       </Pie>
 
       {/* Centered Text */}
-      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fontSize={16} fontWeight="bold">
+      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fontSize={14} fontWeight="bold">
         In total:
       </text>
-      <text x="50%" y="52%" textAnchor="middle" dominantBaseline="middle" fontSize={24} fontWeight="bold">
+      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={20} fontWeight="bold">
         ₹{total}
       </text>
 
-      <Legend
-        wrapperStyle={{ fontWeight: "bold" }} // Bold legend text
-      />
+      <Legend wrapperStyle={{ fontWeight: "bold" }} /> {/* Bold legend text */}
     </PieChart>
   );
 };
