@@ -1,6 +1,4 @@
-
-
-const calculateInvestment = ({ 
+export const calculateInvestment = ({ 
     pattern, // "weekly", "monthly", or "yearly" str
     initialInvestment, 
     stepUpPercentage, // Percentage increase in investment every year
@@ -21,13 +19,13 @@ const calculateInvestment = ({
             principalInvested += currentInvestment;
         }
 
-        //expected return rate 
+        // Expected return rate 
         totalAmount *= (1 + returnRate / 100);
 
-        // step-up percentage for the next year
+        // Step-up percentage for the next year
         currentInvestment += (currentInvestment * stepUpPercentage) / 100;
 
-        // formula for inflation
+        // Adjust for inflation
         totalAmount /= (1 + inflationRate / 100);
     }
 
@@ -39,5 +37,3 @@ const calculateInvestment = ({
         returnsEarned: returnsEarned.toFixed(2),
     };
 };
-
-
