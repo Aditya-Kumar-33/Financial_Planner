@@ -21,7 +21,7 @@ const InputBoxPercentage = ({ label = "", placeholder = "" }) => {
                 className="flex-1 p-2 border w-5xs rounded-lg outline-none"
                 onChange={handleNumber}
                 initial={{ scale: 1 }}
-                whileFocus={{ scale: 1.1 }}
+                whileFocus={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 200 }}
                 
             />

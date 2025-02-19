@@ -20,7 +20,7 @@ const InputBoxNum = ({label='',placeholder=''}) => {
         className="flex-1 p-2 border rounded-lg outline-none"
         onChange={handleNumber}
         initial={{ scale: 1 }}
-        whileFocus={{ scale: 1.1 }}
+        whileFocus={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 200 }}
       />
     </div>
