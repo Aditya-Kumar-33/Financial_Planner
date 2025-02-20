@@ -1,51 +1,26 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 
-const ButtonCalc = () => {
-  const [selected, setSelected] = useState("Set Target");
-
+const ButtonCalc = ({ selectedTarget, setSelectedTarget }) => {
   return (
     <div className="relative flex gap-2 bg-gray-200 p-2 rounded-[30px] w-[30%]">
       
-      <div
-        className="relative flex-1 cursor-pointer text-center"
-        onClick={() => setSelected("Set Target")}
+      {/* Set Target Button */}
+      <button
+        onClick={() => setSelectedTarget("Set Target")}
+        className={`flex-1 px-4 py-2 font-bold rounded-[30px] transition-all duration-300 
+        ${selectedTarget === "Set Target" ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
       >
-        {selected === "Set Target" && (
-          <motion.div
-            layoutId="active"
-            className="absolute inset-0 font-bold bg-blue-800 rounded-[30px]"
-            transition={{ type: "spring", stiffness: 250, damping: 30 }}
-          />
-        )}
-        <button
-          className={`relative font-bold z-10 px-4 py-2 w-full ${
-            selected === "Set Target" ? "text-white" : "text-black"
-          }`}
-        >
-          Set Target
-        </button>
-      </div>
+        Set Target
+      </button>
 
-      <div
-        className="relative flex-1 cursor-pointer text-center"
-        onClick={() => setSelected("Track Growth")}
+      {/* Track Growth Button */}
+      <button
+        onClick={() => setSelectedTarget("Track Growth")}
+        className={`flex-1 px-4 py-2 font-bold rounded-[30px] transition-all duration-300 
+        ${selectedTarget === "Track Growth" ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
       >
-        {selected === "Track Growth" && (
-          <motion.div
-            layoutId="active"
-            className="absolute inset-0 font-bold bg-blue-800 rounded-[30px]"
-            transition={{ type: "spring", stiffness: 250, damping: 30 }}
-          />
-        )}
-        <button
-          className={`relative font-bold z-10 px-4 py-2 w-full ${
-            selected === "Track Growth" ? "text-white" : "text-black"
-          }`}
-        >
-          Track Growth
-        </button>
-      </div>
+        Track Growth
+      </button>
 
     </div>
   );

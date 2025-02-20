@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
-const ButtonWMY = () => {
-  const [selected, setSelected] = useState("Weekly");
+const ButtonWMY = ({ selectedPattern, setSelectedPattern }) => {
   const options = ["Weekly", "Monthly", "Yearly"];
 
   return (
@@ -11,9 +10,9 @@ const ButtonWMY = () => {
         <div
           key={option}
           className="relative flex-1 cursor-pointer text-center"
-          onClick={() => setSelected(option)}
+          onClick={() => setSelectedPattern(option.toLowerCase())} // Convert to lowercase for consistency
         >
-          {selected === option && (
+          {selectedPattern === option.toLowerCase() && (
             <motion.div
               layoutId="active"
               className="absolute inset-0 bg-black rounded-md"
@@ -22,7 +21,7 @@ const ButtonWMY = () => {
           )}
           <button
             className={`relative z-10 px-4 py-2 ${
-              selected === option ? "text-white" : "text-black"
+              selectedPattern === option.toLowerCase() ? "text-white" : "text-black"
             }`}
           >
             {option}

@@ -2,6 +2,7 @@ import React from "react";
 import { PieChart, Pie, Cell, Legend } from "recharts";
 
 const DonutChart = ({ principal, returns, total }) => {
+  const roundedTotal = total.toFixed(2);
   const data = [
     { name: "Principal", value: principal, color: "#007bff" }, // Blue
     { name: "Returns", value: returns, color: "#ffc107" }, // Yellow
@@ -19,13 +20,12 @@ const DonutChart = ({ principal, returns, total }) => {
         outerRadius={120} // Controls the size of the chart
         fill="#8884d8"
         label={({ value, cx, cy, midAngle, outerRadius }) => {
-          // Calculate label position
           const RADIAN = Math.PI / 180;
           const x = cx + (outerRadius + 50) * Math.cos(-midAngle * RADIAN);
           const y = cy + (outerRadius + 50) * Math.sin(-midAngle * RADIAN);
           return (
             <text x={x} y={y} textAnchor="middle" fontSize={14} fontWeight="bold" fill="#333">
-              ₹{value}
+              ₹{value.toFixed(2)}
             </text>
           );
         }}
@@ -40,10 +40,10 @@ const DonutChart = ({ principal, returns, total }) => {
         In total:
       </text>
       <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={20} fontWeight="bold">
-        ₹{total}
+        ₹{roundedTotal}
       </text>
 
-      <Legend wrapperStyle={{ fontWeight: "bold" }} /> {/* Bold legend text */}
+      <Legend wrapperStyle={{ fontWeight: "bold" }} />
     </PieChart>
   );
 };
