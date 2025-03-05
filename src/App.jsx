@@ -9,7 +9,7 @@ function App() {
         <Route 
           index 
           element={
-          <div>
+          <div className="h-screen">
             <NavBar/>
             <Calculator/>
           </div>} 

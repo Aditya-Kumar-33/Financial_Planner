@@ -67,7 +67,7 @@ const Calculator = () => {
 
 
   return (
-    <div className="h-screen grid grid-rows-[5%,95%] bg-[#2ec4b6]">
+    <div className="h-[91%] grid grid-rows-[5%,95%] bg-[#2ec4b6]">
       <div className="h-full w-full flex justify-center items-center gap-[30px]">
         <ButtonCalc
           selectedTarget={selectedTarget}
@@ -89,13 +89,16 @@ const Calculator = () => {
           <button 
             onClick={handleCalculate} 
             type="button" 
-            className="text-white bg-[#0466c8] hover:bg-[#023e7d] cursor-pointer font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            className="text-white w-[25%] bg-[#0466c8] hover:bg-[#023e7d] cursor-pointer font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
-            Calculate Now
+            Calculate
           </button>
         </div>
 
-        <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
+        <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex flex-col justify-center items-center">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">
+            Total Invested: ₹ {investmentResult.actualTotalInvested.toFixed(2)}
+          </h2>
           <DonutChart
             principal={investmentResult.principalInvested}
             returns={investmentResult.returnsEarned}
@@ -103,6 +106,15 @@ const Calculator = () => {
           />
         </div>
       </div>
+
+        {/* <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
+          <DonutChart
+            principal={investmentResult.principalInvested}
+            returns={investmentResult.returnsEarned}
+            total={investmentResult.finalAmount}
+          />
+        </div>
+      </div> */}
     </div>
   );
 };
