@@ -6,8 +6,8 @@ import InputBoxNum from "../components/InputBoxNum";
 import InputBoxPercentage from "../components/InputBoxPercentage";
 import InputDuration from "../components/InputDuration";
 import InputInflation from "../components/InputInflation";
-import { calculateRequiredInvestment } from "../Functions/calculateRequiredInvestment";
-import { calculateInvestment } from "../Functions/CalculateInvestment";
+import { calculateRequiredInvestment } from "../Functions/calculateTarget";
+import { calculateInvestment } from "../Functions/calculateSIP";
 
 const Calculator = () => {
   const [selectedTarget, setSelectedTarget] = useState(0);
@@ -22,6 +22,7 @@ const Calculator = () => {
     principalInvested: 0,
     returnsEarned: 0,
     finalAmount: 0,
+    actualTotalInvested: 0, // New field for actual investment
   });
 
   const handleCalculate = () => {
@@ -33,31 +34,35 @@ const Calculator = () => {
       console.log("Duration:", duration);
       console.log("Inflation:", inflation);
 
-      const params = {
-          pattern: selectedPattern,
-          amountToInvestEveryDuration: Number(amount) || 0,
-          inflationRate: Number(inflation) || 0,
-          returnRate: Number(interestRate) || 0,
-          duration: Number(duration)
-      };
+    const params = {
+        pattern: selectedPattern,
+        stepUpPercentage: 0,
+        inflationRate: Number(inflation) || 0,
+        returnRate: Number(interestRate) || 0,
+        duration: Number(duration) || 0,
+    };
 
-      let result;
-      if (selectedTarget === 1) {
-          result = calculateRequiredInvestment({
-              ...params,
-              targetAmount: Number(amount) || 0,
-          });
-      } else {
-          result = calculateInvestment(params);
-      }
+    let result;
+    if (selectedTarget === 0) {
+        result = calculateRequiredInvestment({
+            ...params,
+            targetAmount: Number(amount) || 0,
+        });
+    } else {
+        result = calculateInvestment({
+            ...params,
+            repeatingInvestment: Number(amount) || 0, // Corrected parameter name
+        });
+    }
 
-      console.log("Calculation Result:", result);
+    console.log("Calculation Result:", result);
 
-      setInvestmentResult({
-          principalInvested: Number(result ? result.principalInvested : 0),
-          returnsEarned: Number(result ? result.returnsEarned : 0),
-          finalAmount: Number(result ? result.finalAmount : 0),
-      });
+    setInvestmentResult({
+        principalInvested: Number(result?.totalInvested) || 0, // Inflation-adjusted total invested
+        returnsEarned: Number(result?.returns) || 0,
+        finalAmount: Number(result?.totalAmount) || 0,
+        actualTotalInvested: Number(result?.actualTotalInvested) || 0, // Storing actual investment
+    });
   };
 
 
