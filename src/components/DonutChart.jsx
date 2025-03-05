@@ -24,7 +24,7 @@ const DonutChart = ({ principal, returns, total }) => {
           const x = cx + (outerRadius + 50) * Math.cos(-midAngle * RADIAN);
           const y = cy + (outerRadius + 50) * Math.sin(-midAngle * RADIAN);
           return (
-            <text x={x} y={y} textAnchor="middle" fontSize={14} fontWeight="bold" fill="#333">
+            <text x={x} y={y} textAnchor="middle" fontSize={14} fontWeight="bold" fill="#ffffff">
               ₹{value.toFixed(2)}
             </text>
           );
@@ -36,10 +36,10 @@ const DonutChart = ({ principal, returns, total }) => {
       </Pie>
 
       {/* Centered Text */}
-      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fontSize={14} fontWeight="bold">
+      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fontSize={14} fontWeight="bold" fill="#ffffff">
         In total:
       </text>
-      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={20} fontWeight="bold">
+      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={20} fontWeight="bold" fill="#ffffff">
         ₹{roundedTotal}
       </text>
 

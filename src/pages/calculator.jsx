@@ -25,66 +25,56 @@ const Calculator = () => {
     actualTotalInvested: 0, // New field for actual investment
   });
 
-  const [investmentType, setinvestmentType] = useState(0);
-
   const handleCalculate = () => {
-      console.log("Button clicked");
-      console.log("Selected Target:", selectedTarget);
-      console.log("Selected Pattern:", selectedPattern);
-      console.log("Amount:", amount);
-      console.log("Interest Rate:", interestRate);
-      console.log("Duration:", duration);
-      console.log("Inflation:", inflation);
-
     const params = {
-        pattern: selectedPattern,
-        stepUpPercentage: 0,
-        inflationRate: Number(inflation) || 0,
-        returnRate: Number(interestRate) || 0,
-        duration: Number(duration) || 0,
+      pattern: selectedPattern,
+      stepUpPercentage: 0,
+      inflationRate: Number(inflation) || 0,
+      returnRate: Number(interestRate) || 0,
+      duration: Number(duration) || 0,
     };
 
     let result;
     if (selectedTarget === 0) {
-        result = calculateRequiredInvestment({
-            ...params,
-            targetAmount: Number(amount) || 0,
-        });
+      result = calculateRequiredInvestment({
+        ...params,
+        targetAmount: Number(amount) || 0,
+      });
     } else {
-        result = calculateInvestment({
-            ...params,
-            repeatingInvestment: Number(amount) || 0, // Corrected parameter name
-        });
+      result = calculateInvestment({
+        ...params,
+        repeatingInvestment: Number(amount) || 0,
+      });
     }
 
-    console.log("Calculation Result:", result);
-
     setInvestmentResult({
-        principalInvested: Number(result?.totalInvested) || 0, // Inflation-adjusted total invested
-        returnsEarned: Number(result?.returns) || 0,
-        finalAmount: Number(result?.totalAmount) || 0,
-        actualTotalInvested: Number(result?.actualTotalInvested) || 0, // Storing actual investment
+      principalInvested: Number(result?.totalInvested) || 0,
+      returnsEarned: Number(result?.returns) || 0,
+      finalAmount: Number(result?.totalAmount) || 0,
+      actualTotalInvested: Number(result?.actualTotalInvested) || 0,
     });
   };
 
-
   return (
-    <div className="h-[91%] grid grid-rows-[5%,95%] bg-[#2ec4b6]">
+    <div className="h-[91%] grid grid-rows-[5%,95%] 
+    bg-gradient-to-bl
+from-[#0f172a]
+via-[#1e1a78]
+to-[#223561] text-white">
       <div className="h-full w-full flex justify-center items-center gap-[30px]">
-        <ButtonCalc
-          selectedTarget={selectedTarget}
-          setSelectedTarget={setSelectedTarget}
-        />
+        <ButtonCalc selectedTarget={selectedTarget} setSelectedTarget={setSelectedTarget} />
       </div>
 
       <div className="h-full w-full flex gap-[4px] p-[30px] pt-[0px] items-center">
-      <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
-          <ButtonWMY
-            selectedPattern={selectedPattern}
-            setSelectedPattern={setSelectedPattern}
+        <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
+          <ButtonWMY selectedPattern={selectedPattern} setSelectedPattern={setSelectedPattern} />
+          <InputBoxNum 
+            label={selectedTarget === 0 ? "Target Amount" : "Investment Amount"} 
+            placeholder="₹ 0" 
+            value={amount} 
+            onChange={setAmount} 
           />
-          <InputBoxNum label={"Amount"} placeholder="₹ 0" value={amount} onChange={setAmount} />
-          <InputInflation label={"Interest Rate"} placeholder="0" value={interestRate} onChange={setInterestRate} />
+          <InputInflation label={"Return (p.a.)"} placeholder="0" value={interestRate} onChange={setInterestRate} />
           <InputDuration label="Duration" placeholder="0" value={duration} onChange={setDuration} />
           <InputInflation label="Inflation (p.a.)" placeholder="0" value={inflation} onChange={setInflation} />
           
@@ -97,9 +87,9 @@ const Calculator = () => {
           </button>
         </div>
 
-        <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex flex-col justify-center items-center">
-          <h2 className="text-xl font-bold text-gray-700 mb-4">
-            Total Invested: ₹ {investmentResult.actualTotalInvested.toFixed(2)}
+        <div className="w-1/2 h-full bg-[#232526] rounded-[30px] flex flex-col justify-center items-center">
+          <h2 className="text-xl font-bold text-white mb-4">
+            {selectedTarget === 0 ? "Monthly SIP needed" : "Total Invested Amount"}: ₹ {investmentResult.actualTotalInvested.toFixed(2)}
           </h2>
           <DonutChart
             principal={investmentResult.principalInvested}
@@ -108,18 +98,8 @@ const Calculator = () => {
           />
         </div>
       </div>
-
-        {/* <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
-          <DonutChart
-            principal={investmentResult.principalInvested}
-            returns={investmentResult.returnsEarned}
-            total={investmentResult.finalAmount}
-          />
-        </div>
-      </div> */}
     </div>
   );
 };
 
 export default Calculator;
-

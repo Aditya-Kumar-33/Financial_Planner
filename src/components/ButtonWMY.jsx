@@ -5,7 +5,7 @@ const ButtonWMY = ({ selectedPattern, setSelectedPattern }) => {
   const options = ["Weekly", "Monthly", "Yearly"];
 
   return (
-    <div className="relative flex gap-2 border-2 h-fit p-2.5 rounded-2xl bg-[#cbf3f0] w-fit">
+    <div className="relative flex gap-2 h-fit p-2 rounded-2xl bg-[#232526] w-fit">
       {options.map((option) => (
         <div
           key={option}
@@ -15,13 +15,13 @@ const ButtonWMY = ({ selectedPattern, setSelectedPattern }) => {
           {selectedPattern === option.toLowerCase() && (
             <motion.div
               layoutId="active"
-              className="absolute inset-0 bg-blue-800 rounded-md"
+              className="absolute inset-0 bg-yellow-500 rounded-2xl"
               transition={{ type: "spring", stiffness: 250, damping: 30 }}
             />
           )}
           <button
             className={`relative z-10 px-4 py-2 ${
-              selectedPattern === option.toLowerCase() ? "text-white" : "text-black"
+              selectedPattern === option.toLowerCase() ? "text-white" : "text-white"
             }`}
           >
             {option}
