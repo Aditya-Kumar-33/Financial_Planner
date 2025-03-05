@@ -25,6 +25,8 @@ const Calculator = () => {
     actualTotalInvested: 0, // New field for actual investment
   });
 
+  const [investmentType, setinvestmentType] = useState(0);
+
   const handleCalculate = () => {
     console.log("Button clicked");
     console.log("Selected Target:", selectedTarget);
@@ -80,10 +82,15 @@ const Calculator = () => {
             selectedPattern={selectedPattern}
             setSelectedPattern={setSelectedPattern}
           />
-          <InputBoxNum label={"Amount"} placeholder="₹ 0" value={amount} onChange={setAmount} />
-          <InputBoxPercentage label={"Interest Rate"} placeholder="0" value={interestRate} onChange={setInterestRate} />
+          <InputBoxNum 
+            label={selectedTarget === "Set Target" ? "Target Amount" : "Investment Amount"} 
+            placeholder="₹ 0" 
+            value={amount} 
+            onChange={setAmount} 
+          />
+          <InputBoxPercentage label={"Returns (p.a.)"} placeholder="0" value={interestRate} onChange={setInterestRate} />
           <InputDuration label="Duration" placeholder="0" value={duration} onChange={setDuration} />
-          <InputInflation label="Inflation Percentage" placeholder="0" value={inflation} onChange={setInflation} />
+          <InputInflation label="Inflation (p.a.)" placeholder="0" value={inflation} onChange={setInflation} />
           
           <button 
             onClick={handleCalculate} 
