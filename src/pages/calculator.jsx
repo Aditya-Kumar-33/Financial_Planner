@@ -10,7 +10,7 @@ import { calculateRequiredInvestment } from "../Functions/calculateRequiredInves
 import { calculateInvestment } from "../Functions/CalculateInvestment";
 
 const Calculator = () => {
-  const [selectedTarget, setSelectedTarget] = useState("Set Target");
+  const [selectedTarget, setSelectedTarget] = useState(0);
   const [selectedPattern, setSelectedPattern] = useState("monthly");
 
   const [amount, setAmount] = useState("");
@@ -25,76 +25,72 @@ const Calculator = () => {
   });
 
   const handleCalculate = () => {
-    console.log("Button clicked");
-    console.log("Selected Target:", selectedTarget);
-    console.log("Selected Pattern:", selectedPattern);
-    console.log("Amount:", amount);
-    console.log("Interest Rate:", interestRate);
-    console.log("Duration:", duration);
-    console.log("Inflation:", inflation);
+      console.log("Button clicked");
+      console.log("Selected Target:", selectedTarget);
+      console.log("Selected Pattern:", selectedPattern);
+      console.log("Amount:", amount);
+      console.log("Interest Rate:", interestRate);
+      console.log("Duration:", duration);
+      console.log("Inflation:", inflation);
 
-    const params = {
-      pattern: selectedPattern,
-      stepUpPercentage: 0,
-      inflationRate: Number(inflation) || 0,
-      returnRate: Number(interestRate) || 0,
-      years: Number(duration) || 0,
-    };
+      const params = {
+          pattern: selectedPattern,
+          amountToInvestEveryDuration: Number(amount) || 0,
+          inflationRate: Number(inflation) || 0,
+          returnRate: Number(interestRate) || 0,
+          duration: Number(duration)
+      };
 
-    let result;
-    if (selectedTarget === "Set Target") {
-      result = calculateRequiredInvestment({
-        ...params,
-        targetAmount: Number(amount) || 0,
+      let result;
+      if (selectedTarget === 1) {
+          result = calculateRequiredInvestment({
+              ...params,
+              targetAmount: Number(amount) || 0,
+          });
+      } else {
+          result = calculateInvestment(params);
+      }
+
+      console.log("Calculation Result:", result);
+
+      setInvestmentResult({
+          principalInvested: Number(result ? result.principalInvested : 0),
+          returnsEarned: Number(result ? result.returnsEarned : 0),
+          finalAmount: Number(result ? result.finalAmount : 0),
       });
-    } else {
-      result = calculateInvestment({
-        ...params,
-        initialInvestment: Number(amount) || 0,
-      });
-    }
-
-    console.log("Calculation Result:", result);
-
-    setInvestmentResult({
-      principalInvested: Number(result?.totalPrincipalInvested) || 0,
-      returnsEarned: Number(result?.returnsEarned) || 0,
-      finalAmount:
-        (Number(result?.totalPrincipalInvested) || 0) +
-        (Number(result?.returnsEarned) || 0),
-    });
   };
 
+
   return (
-    <div className="h-screen w-screen grid grid-rows-[5%,95%]">
-      <div className="h-full w-full bg-white flex justify-center items-center gap-[30px]">
+    <div className="h-screen grid grid-rows-[5%,95%] bg-[#2ec4b6]">
+      <div className="h-full w-full flex justify-center items-center gap-[30px]">
         <ButtonCalc
           selectedTarget={selectedTarget}
           setSelectedTarget={setSelectedTarget}
         />
       </div>
 
-      <div className="h-full w-full bg-white flex gap-[4px] p-[30px] pt-[0px] items-center">
+      <div className="h-full w-full flex gap-[4px] p-[30px] pt-[0px] items-center">
       <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
           <ButtonWMY
             selectedPattern={selectedPattern}
             setSelectedPattern={setSelectedPattern}
           />
           <InputBoxNum label={"Amount"} placeholder="₹ 0" value={amount} onChange={setAmount} />
-          <InputBoxPercentage label={"Interest Rate"} placeholder="0" value={interestRate} onChange={setInterestRate} />
+          <InputInflation label={"Interest Rate"} placeholder="0" value={interestRate} onChange={setInterestRate} />
           <InputDuration label="Duration" placeholder="0" value={duration} onChange={setDuration} />
           <InputInflation label="Inflation Percentage" placeholder="0" value={inflation} onChange={setInflation} />
           
           <button 
             onClick={handleCalculate} 
             type="button" 
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            className="text-white bg-[#0466c8] hover:bg-[#023e7d] cursor-pointer font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
             Calculate Now
           </button>
         </div>
 
-        <div className="w-1/2 h-full bg-gray-200 rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
+        <div className="w-1/2 h-full bg-[#cbf3f0] rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
           <DonutChart
             principal={investmentResult.principalInvested}
             returns={investmentResult.returnsEarned}
@@ -107,3 +103,4 @@ const Calculator = () => {
 };
 
 export default Calculator;
+
