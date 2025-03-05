@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const InputDuration = ({ label = "", placeholder = "", value, onChange }) => {
   const handleNumber = (e) => {
     let val = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
-    val = Math.min(1000, Number(val)); // Limit to 1000
+    val = Math.min(100, Number(val)); // Limit to 1000
     onChange(val || ""); // Prevents leading zero issue
   };
 

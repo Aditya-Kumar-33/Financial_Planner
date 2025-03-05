@@ -2,22 +2,22 @@ import React from "react";
 
 const ButtonCalc = ({ selectedTarget, setSelectedTarget }) => {
   return (
-    <div className="relative flex gap-2 bg-gray-200 p-2 rounded-[30px] w-[30%]">
+    <div className="relative flex gap-2 bg-[#cbf3f0] p-2.5 rounded-3xl w-[30%]">
       
       {/* Set Target Button */}
       <button
-        onClick={() => setSelectedTarget("Set Target")}
-        className={`flex-1 px-4 py-2 font-bold rounded-[30px] transition-all duration-300 
-        ${selectedTarget === "Set Target" ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
+        onClick={() => setSelectedTarget(0)}
+        className={`flex-1 px-4 py-2 font-bold rounded-2xl transition-all duration-300 
+        ${selectedTarget === 0 ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
       >
         Set Target
       </button>
 
       {/* Track Growth Button */}
       <button
-        onClick={() => setSelectedTarget("Track Growth")}
-        className={`flex-1 px-4 py-2 font-bold rounded-[30px] transition-all duration-300 
-        ${selectedTarget === "Track Growth" ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
+        onClick={() => setSelectedTarget(1)}
+        className={`flex-1 px-4 py-2 font-bold rounded-2xl transition-all duration-300 
+        ${selectedTarget === 1 ? "bg-blue-800 text-white" : "bg-white text-black border border-blue-800"}`}
       >
         Track Growth
       </button>
