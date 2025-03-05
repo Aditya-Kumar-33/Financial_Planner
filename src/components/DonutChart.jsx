@@ -16,7 +16,7 @@ const DonutChart = ({ principal, returns, total }) => {
         nameKey="name"
         cx="50%"
         cy="50%"
-        innerRadius={75} // Creates the hole (donut effect)
+        innerRadius={90} // Creates the hole (donut effect)
         outerRadius={120} // Controls the size of the chart
         fill="#8884d8"
         label={({ value, cx, cy, midAngle, outerRadius }) => {

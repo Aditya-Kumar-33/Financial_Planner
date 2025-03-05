@@ -6,8 +6,8 @@ import InputBoxNum from "../components/InputBoxNum";
 import InputBoxPercentage from "../components/InputBoxPercentage";
 import InputDuration from "../components/InputDuration";
 import InputInflation from "../components/InputInflation";
-import { calculateRequiredInvestment } from "../Functions/calculateRequiredInvestment";
-import { calculateInvestment } from "../Functions/CalculateInvestment";
+import { calculateRequiredInvestment } from "../Functions/calculateTarget";
+import { calculateInvestment } from "../Functions/calculateSIP";
 
 const Calculator = () => {
   const [selectedTarget, setSelectedTarget] = useState("Set Target");
@@ -22,6 +22,7 @@ const Calculator = () => {
     principalInvested: 0,
     returnsEarned: 0,
     finalAmount: 0,
+    actualTotalInvested: 0, // New field for actual investment
   });
 
   const handleCalculate = () => {
@@ -34,34 +35,33 @@ const Calculator = () => {
     console.log("Inflation:", inflation);
 
     const params = {
-      pattern: selectedPattern,
-      stepUpPercentage: 0,
-      inflationRate: Number(inflation) || 0,
-      returnRate: Number(interestRate) || 0,
-      years: Number(duration) || 0,
+        pattern: selectedPattern,
+        stepUpPercentage: 0,
+        inflationRate: Number(inflation) || 0,
+        returnRate: Number(interestRate) || 0,
+        duration: Number(duration) || 0,
     };
 
     let result;
     if (selectedTarget === "Set Target") {
-      result = calculateRequiredInvestment({
-        ...params,
-        targetAmount: Number(amount) || 0,
-      });
+        result = calculateRequiredInvestment({
+            ...params,
+            targetAmount: Number(amount) || 0,
+        });
     } else {
-      result = calculateInvestment({
-        ...params,
-        initialInvestment: Number(amount) || 0,
-      });
+        result = calculateInvestment({
+            ...params,
+            repeatingInvestment: Number(amount) || 0, // Corrected parameter name
+        });
     }
 
     console.log("Calculation Result:", result);
 
     setInvestmentResult({
-      principalInvested: Number(result?.totalPrincipalInvested) || 0,
-      returnsEarned: Number(result?.returnsEarned) || 0,
-      finalAmount:
-        (Number(result?.totalPrincipalInvested) || 0) +
-        (Number(result?.returnsEarned) || 0),
+        principalInvested: Number(result?.totalInvested) || 0, // Inflation-adjusted total invested
+        returnsEarned: Number(result?.returns) || 0,
+        finalAmount: Number(result?.totalAmount) || 0,
+        actualTotalInvested: Number(result?.actualTotalInvested) || 0, // Storing actual investment
     });
   };
 
@@ -75,7 +75,7 @@ const Calculator = () => {
       </div>
 
       <div className="h-full w-full bg-white flex gap-[4px] p-[30px] pt-[0px] items-center">
-      <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
+        <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
           <ButtonWMY
             selectedPattern={selectedPattern}
             setSelectedPattern={setSelectedPattern}
@@ -93,8 +93,10 @@ const Calculator = () => {
             Calculate Now
           </button>
         </div>
-
-        <div className="w-1/2 h-full bg-gray-200 rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex justify-center items-center">
+        <div className="w-1/2 h-full bg-gray-200 rounded-[30px] border-[0.01px] border-gray-300 border-opacity-10 flex flex-col justify-center items-center">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">
+            Total Invested: ₹ {investmentResult.actualTotalInvested.toFixed(2)}
+          </h2>
           <DonutChart
             principal={investmentResult.principalInvested}
             returns={investmentResult.returnsEarned}
