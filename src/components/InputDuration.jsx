@@ -10,12 +10,12 @@ const InputDuration = ({ label = "", placeholder = "", value, onChange }) => {
 
   return (
     <div className="flex items-center p-2 rounded-lg w-full max-w-md">
-      <span className="text-lg font-medium text-black pr-[20px]">{label}</span>
+      <span className="text-lg font-medium text-white pr-[20px]">{label}</span>
       <motion.input
         type="text"
         value={value}
         placeholder={placeholder}
-        className="p-2 border border-black text-black bg-transparent rounded-lg outline-none w-[90%] max-w-[400px] text-left placeholder-black"
+        className="p-2 border border-white text-white bg-transparent rounded-lg outline-none w-[90%] max-w-[400px] text-left placeholder-white"
         onChange={handleNumber}
         initial={{ scale: 1 }}
         whileFocus={{ scale: 1.05 }}

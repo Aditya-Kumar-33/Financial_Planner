@@ -3,9 +3,8 @@ import DonutChart from "../components/DonutChart";
 import ButtonWMY from "../components/ButtonWMY";
 import ButtonCalc from "../components/ButtonCalc";
 import InputBoxNum from "../components/InputBoxNum";
-import InputBoxPercentage from "../components/InputBoxPercentage";
 import InputDuration from "../components/InputDuration";
-import InputInflation from "../components/InputInflation";
+import InputInflation from "../components/InputPercentage";
 import { calculateRequiredInvestment } from "../Functions/calculateTarget";
 import { calculateInvestment } from "../Functions/calculateSIP";
 
@@ -58,9 +57,9 @@ const Calculator = () => {
   return (
     <div className="h-[91%] grid grid-rows-[5%,95%] 
     bg-gradient-to-bl
-from-[#0f172a]
-via-[#1e1a78]
-to-[#223561] text-white">
+from-[#1c1c1d]
+via-[#13104e]
+to-[#0f1a33] text-white">
       <div className="h-full w-full flex justify-center items-center gap-[30px]">
         <ButtonCalc selectedTarget={selectedTarget} setSelectedTarget={setSelectedTarget} />
       </div>
@@ -87,7 +86,7 @@ to-[#223561] text-white">
           </button>
         </div>
 
-        <div className="w-1/2 h-full bg-[#232526] rounded-[30px] flex flex-col justify-center items-center">
+        <div className="w-1/2 h-full bg-[#3d4143] rounded-[30px] flex flex-col justify-center items-center">
           <h2 className="text-xl font-bold text-white mb-4">
             {selectedTarget === 0 ? "Monthly SIP needed" : "Total Invested Amount"}: ₹ {investmentResult.actualTotalInvested.toFixed(2)}
           </h2>
