@@ -7,6 +7,7 @@ import InputDuration from "../components/InputDuration";
 import InputInflation from "../components/InputPercentage";
 import { calculateRequiredInvestment } from "../Functions/calculateTarget";
 import { calculateInvestment } from "../Functions/calculateSIP";
+import InputPercentage from "../components/InputPercentage";
 
 const Calculator = () => {
   const [selectedTarget, setSelectedTarget] = useState(0);
@@ -16,7 +17,6 @@ const Calculator = () => {
   const [interestRate, setInterestRate] = useState("");
   const [duration, setDuration] = useState("");
   const [inflation, setInflation] = useState("");
-
   const [investmentResult, setInvestmentResult] = useState({
     principalInvested: 0,
     returnsEarned: 0,
@@ -67,15 +67,40 @@ to-[#0f1a33] text-white">
       <div className="h-full w-full flex gap-[4px] p-[30px] pt-[0px] items-center">
         <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
           <ButtonWMY selectedPattern={selectedPattern} setSelectedPattern={setSelectedPattern} />
-          <InputBoxNum 
-            label={selectedTarget === 0 ? "Target Amount" : "Investment Amount"} 
-            placeholder="₹ 0" 
-            value={amount} 
-            onChange={setAmount} 
-          />
-          <InputInflation label={"Return (p.a.)"} placeholder="0" value={interestRate} onChange={setInterestRate} />
-          <InputDuration label="Duration" placeholder="0" value={duration} onChange={setDuration} />
-          <InputInflation label="Inflation (p.a.)" placeholder="0" value={inflation} onChange={setInflation} />
+          <div className="flex">
+            <div className="flex flex-col gap-5">
+              <InputBoxNum 
+                label={selectedTarget === 0 ? "Target Amount" : "Investment Amount"} 
+                placeholder="₹ 0" 
+                value={amount} 
+                onChange={setAmount} 
+              />
+
+              <InputPercentage 
+                label={"Return (p.a.)"} 
+                placeholder="0" 
+                value={interestRate} 
+                onChange={setInterestRate} 
+              />
+            </div>
+
+            <div className="flex flex-col gap-5">
+            <InputPercentage 
+                label={"Inflation (p.a.)"} 
+                placeholder="0" 
+                value={inflation} 
+                onChange={setInflation} 
+            />
+
+              <InputPercentage 
+                label={"Duration"} 
+                placeholder="0" 
+                value={duration} 
+                onChange={setDuration} 
+              />
+
+            </div>
+          </div>
           
           <button 
             onClick={handleCalculate} 

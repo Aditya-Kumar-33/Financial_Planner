@@ -8,7 +8,7 @@ const InputBoxNum = ({ label = "", placeholder = "", value, onChange }) => {
   };
 
   return (
-    <div className="flex items-center gap-4 p-2 rounded-lg w-full max-w-md">
+    <div className="flex items-center p-8 rounded-lg">
       <span className="text-lg font-medium text-white">{label}</span>
       <motion.input
         type="text"
