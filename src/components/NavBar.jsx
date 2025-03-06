@@ -11,7 +11,7 @@ const NavBar = () => {
             <div className="flex shrink-0 items-center">
               <img className="h-8 w-auto" src={logo} alt="Your Company" />
             </div>
-            <div className="hidden sm:ml-6 sm:block">
+            <div className="hidden sm:ml-10 sm:block">
               <div className="flex space-x-4">
               <a href="#" className="relative rounded-md bg- px-3 py-2 text-sm font-bold text-blue-800">
                     Calculator

@@ -31,7 +31,7 @@ const DonutChart = ({ principal, returns, total }) => {
         }}
       >
         {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={entry.color} />
+          <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
         ))}
       </Pie>
 
