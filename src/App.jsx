@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Calculator from "./pages/calculator.jsx";
+import Home from "./pages/Home.jsx";
 import NavBar from "./components/NavBar.jsx";
 
 function App() {
@@ -10,8 +11,7 @@ function App() {
           index 
           element={
           <div className="h-screen">
-            <NavBar/>
-            <Calculator/>
+            <Home/>
           </div>} 
         />
       </Routes>
