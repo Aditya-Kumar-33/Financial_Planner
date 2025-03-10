@@ -30,8 +30,15 @@ const Home = () => {
             <div className="absolute right-[10%] top-[40%] w-1/3 h-1/4 rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
                 Hey
             </div>
-            <div className="absolute left-[10%] top-[55%] w-1/3 h-1/4 rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
-                Hey
+            <div className="absolute left-[10%] top-[55%] w-1/3 h-1/4 ">
+            <div className="absolute inset-0 pointer-events-none border-2 border-transparent"
+       style={{
+         maskImage: "linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0))",
+         WebkitMaskImage: "linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0))",
+         borderImage: "linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0)) 1",
+         boxShadow: "0 -8px 20px rgba(255,255,255,0.5)"  // Top shadow effect
+       }}>
+  </div>
             </div>
         </div>
       </div>

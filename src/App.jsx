@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Calculator from "./pages/calculator.jsx";
 import Home from "./pages/Home.jsx";
 import NavBar from "./components/NavBar.jsx";
+import Investment from "./pages/Investment.jsx";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           index 
           element={
           <div className="h-screen">
-            <Home/>
+            <Investment/>
           </div>} 
         />
       </Routes>
