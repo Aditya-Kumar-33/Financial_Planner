@@ -8,7 +8,7 @@ const ButtonCalc = ({ selectedTarget, setSelectedTarget }) => {
       <button
         onClick={() => setSelectedTarget(0)}
         className={`flex-1 px-4 py-2 font-bold rounded-2xl transition-all duration-300 
-        ${selectedTarget === 0 ? "bg-[#ffd700] text-black" : " text-white border"}`}
+        ${selectedTarget === 0 ? "bg-[#85EFC4] text-black" : " text-white border"}`}
       >
         Set Target
       </button>
