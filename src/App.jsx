@@ -13,7 +13,7 @@ function App() {
           index 
           element={
           <div className="h-screen">
-            <Home/>
+            <Expense/>
           </div>} 
         />
       </Routes>
