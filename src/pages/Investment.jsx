@@ -48,7 +48,7 @@ const Investment = () => {
     bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318] 
     font-dm-sans">
 
-      <div className="h-[85%] w-[100%] mt-25 grid grid-cols-5">
+      <div className="h-[85%] w-[100%] mt-30 grid grid-cols-5">
         <div className="mt-[3vh] ml-[2vh] col-span-1
          text-white flex flex-col gap-5 border-r border-white/30 pr-2">
           {/* Table for Nifty 50, Gold, and SGB */}

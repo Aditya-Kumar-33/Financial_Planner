@@ -1,88 +1,88 @@
 import React, { useState } from 'react';
-import logo from '../assets/logo.png'
-import pfp from '../assets/profilepic.png'
+import { NavLink } from 'react-router-dom'; // Added import for NavLink
+import logo from '../assets/logo.png';
+import pfp from '../assets/profilepic.png';
 import NavButton from './NavButton';
 import AnimatedButton from './AnimatedButton';
 import { FaChevronCircleRight } from "react-icons/fa";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { MdAccountCircle } from 'react-icons/md';
-
+import { FaAngleDown } from 'react-icons/fa'; // Added import for dropdown icon
 
 const NavBar = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  const buttonNames = ["Calculator", "Investment", "Savings", "News"];
+  const [showCalculatorSubmenu, setShowCalculatorSubmenu] = useState(false);
+  
+  const buttonData = [
+    { name: "Savings", path: "/savings" },
+    { name: "Calculator", path: "/calculator", hasSubmenu: true },
+    { name: "Expense", path: "/expense" },
+    { name: "Investment", path: "/investment" },
+    { name: "News", path: "/news" }
+  ];
+  
+  const SubmenuCalculator = () => {
+    return (
+      <div className="absolute mt-0.5 w-48 bg-[#1E1F2B] rounded-xl shadow-lg z-10 border border-gray-700">
+        <NavLink to="/expense-calculator" className= {({isActive}) => `block px-4 py-2 text-sm rounded-t-lg text-gray-300 hover:bg-gray-700 hover:text-white ${isActive ? "font-semibold" : ""}`}>
+          Expense Calculator
+        </NavLink>
+        <NavLink to="/investment-calculator" className= {({isActive}) => `block px-4 py-2 text-sm rounded-b-lg text-gray-300 hover:bg-gray-700 hover:text-white ${isActive ? "font-semibold" : ""}`}>
+          Investment Calculator
+        </NavLink>
+      </div>
+    );
+  };
+
+  // Modified NavButton for Calculator with dropdown
+  const NavButtonWithSubmenu = ({ name, to, hasSubmenu }) => {
+    if (hasSubmenu) {
+      return (
+        <div className="relative pt-1 cursor-pointer" onMouseEnter={() => setShowCalculatorSubmenu(true)} onMouseLeave={() => setShowCalculatorSubmenu(false)}>
+          <button className="flex cursor-pointer items-center gap-1 font-medium text-gray-300 hover:text-white rounded-xl">
+            {name}
+            <FaAngleDown className="text-xs" />
+          </button>
+          {showCalculatorSubmenu && <SubmenuCalculator />}
+        </div>
+      );
+    }
+    
+    return <NavButton name={name} to={to} />;
+  };
 
   return (
-
     <>
-      <div className='absolute top-5 left-[10%] bg-white w-[80%] h-16 rounded-md backdrop-blur-md flex justify-center font-inter'>
-        <nav className='flex justify-between w-[90%] bg-amber-100'>
+      <div className='absolute top-5 left-[10%] bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] border-b border-gray-700 shadow-blue-500/30 w-[80%] h-16 py-10 rounded-2xl backdrop-blur-xl flex justify-center font-inter text-gray-300 z-1'>
+        <nav className='flex justify-between w-[90%] '>
           <div id='Icon & Name' className="flex shrink-0 items-center w-1/5 gap-3">
-              <img className="h-10 w-auto rounded-lg" src={logo} alt="Your Company" />
-              <p className='font-semibold text-lg'>Finora</p>
+            <img className="h-10 w-auto rounded-lg" src={logo} alt="Your Company" />
+            <p className='font-semibold text-lg'>Money Manager</p>
           </div>
-          <div className='w-4/5 bg-white flex justify-end items-center gap-4'>
-              {buttonNames.map((buttonName,ind) => (<NavButton name={buttonName}/>))}
-              
-              {/* <div className='ml-5 bg-green-400 hover:bg-green-500 w-fit h-fit text-black hover:translate-x-1 py-2.5 px-5 rounded-lg transition-transform duration-300 font-semibold'>
-                <button>Get Started for free</button>
-              </div> */}
 
-              {loggedIn ? (
-                <>
-                <AnimatedButton text="Login" color="bg-blue-500" color2="bg-blue-600">
+          <div className='w-3/5 flex justify-between items-center'>
+            <div className='flex gap-7'>
+              {buttonData.map((button, ind) => (
+                <NavButtonWithSubmenu 
+                  key={ind}
+                  name={button.name} 
+                  to={button.path}
+                  hasSubmenu={button.hasSubmenu}
+                />
+              ))}
+            </div>
+
+            {loggedIn ? (
+              <>
+                <AnimatedButton text="Login" color="bg-[#85EFC4]" color2="bg-[#1E1F2B]" border="border-[#60A5FA]" text1="black" text2="text-[#FACC15]">
                   <MdAccountCircle />
                 </AnimatedButton>
-                
-                <AnimatedButton text="Get Started for free" color="bg-green-500" color2="bg-green-600">
-                <RiLoginCircleFill />
-              </AnimatedButton>
-                </>
-                ) : "" }
+              </>
+            ) : ""}
           </div>
         </nav>
       </div>
     </>
-
-    // <nav className="bg-[#ffffff] h-[9%]">
-    //   <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    //     <div className="relative flex h-16 items-center justify-between">
-    //       <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-    //         <div className="flex shrink-0 items-center">
-    //           <img className="h-8 w-auto" src={logo} alt="Your Company" />
-    //         </div>
-    //         <div className="hidden sm:ml-10 sm:block">
-    //           <div className="flex space-x-4">
-    //           <a href="#" className="relative rounded-md bg- px-3 py-2 text-sm font-bold text-blue-800">
-    //                 Calculator
-    //             <span className="absolute bottom-0 left-1/2 w-[90%] -translate-x-1/2 border-b-[3px] border-blue-800"></span>
-    //           </a>
-    //             <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-blue-800 hover:text-white">Savings</a>
-    //             <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-blue-800 hover:text-white">Investments</a>
-    //             <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-blue-800 hover:text-white">News</a>
-    //           </div>
-    //         </div>
-    //       </div>
-
-          
-    //       <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-    //         <button type="button" className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none">
-    //           <span className="absolute -inset-1.5"></span>
-    //           <span className="sr-only">View notifications</span>
-    //           <svg className="size-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-    //             <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-    //           </svg>
-    //         </button>
-    //         <div className="relative ml-3">
-    //           <button type="button" className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none" id="user-menu-button">
-    //             <span className="sr-only">Open user menu</span>
-    //             <img className="size-8 rounded-full" src={pfp} alt="User" />
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </nav>
   );
 };
 

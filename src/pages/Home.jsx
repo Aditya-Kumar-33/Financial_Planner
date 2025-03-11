@@ -4,7 +4,6 @@ import BackGround from "../components/BackGround";
 const Home = () => {
   return (
     <div className="relative h-screen ">
-
       <BackGround />
 
       {/* Container over bg */}

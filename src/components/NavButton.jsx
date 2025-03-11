@@ -1,13 +1,18 @@
-import React from 'react'
+import { NavLink } from "react-router-dom";
 
-const NavButton = ({name}) => {
+const NavButton = ({ name, to }) => {
   return (
-    <>
-        <div className='bg-black w-fit h-fit text-white hover:scale-105 py-1 px-2 rounded-lg transition-transform duration-300 font-medium'>
-            <button>{name}</button>
-        </div>
-    </>
-  )
-}
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `w-fit h-fit bg-transparent py-1 mx-1 rounded-lg transition-all cursor-pointer duration-500 font-medium 
+        hover:bg-transparent hover:text-white hover:font-semibold hover:scale-120 
+        ${isActive ? "text-white font-semibold scale-110" : "text-white/70"}`
+      }
+    >
+      {name}
+    </NavLink>
+  );
+};
 
-export default NavButton
+export default NavButton;
