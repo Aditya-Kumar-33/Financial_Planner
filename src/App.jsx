@@ -11,7 +11,8 @@ function App() {
         <Route 
           index 
           element={
-          <div className="h-screen">
+          <div className="h-screen w-screen relative">
+            <NavBar/>
             <Investment/>
           </div>} 
         />

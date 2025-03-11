@@ -8,6 +8,7 @@ import InputInflation from "../components/InputPercentage";
 import { calculateRequiredInvestment } from "../Functions/calculateTarget";
 import { calculateInvestment } from "../Functions/calculateSIP";
 import InputPercentage from "../components/InputPercentage";
+import NavBar from "../components/NavBar";
 
 const Calculator = () => {
   const [selectedTarget, setSelectedTarget] = useState(0);
@@ -68,7 +69,7 @@ to-[#0f1a33] text-white">
         <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
           <ButtonWMY selectedPattern={selectedPattern} setSelectedPattern={setSelectedPattern} />
           <div className="flex">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-10">
               <InputBoxNum 
                 label={selectedTarget === 0 ? "Target Amount" : "Investment Amount"} 
                 placeholder="₹ 0" 
@@ -84,7 +85,7 @@ to-[#0f1a33] text-white">
               />
             </div>
 
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-10">
             <InputPercentage 
                 label={"Inflation (p.a.)"} 
                 placeholder="0" 
@@ -93,7 +94,7 @@ to-[#0f1a33] text-white">
             />
 
               <InputPercentage 
-                label={"Duration"} 
+                label={`Duration`} 
                 placeholder="0" 
                 value={duration} 
                 onChange={setDuration} 

@@ -27,9 +27,8 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318]">
-
-      <div className="absolute h-[calc(15vh)] w-[calc(100vw)] text-white flex justify-center items-center">Navbar bana bhai</div>
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318]">
+      {/* <div className="absolute h-[calc(15vh)] w-[calc(100vw)] text-white flex justify-center items-center">Navbar bana bhai</div> */}
 
       <div className="absolute top-[18vh] left-[2vh] w-[20vw] 
        text-white flex flex-col gap-5 border-r border-white/30 pr-2">
