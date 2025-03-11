@@ -19,7 +19,7 @@ const NavBar = () => {
         <nav className='flex justify-between w-[90%] bg-amber-100'>
           <div id='Icon & Name' className="flex shrink-0 items-center w-1/5 gap-3">
               <img className="h-10 w-auto rounded-lg" src={logo} alt="Your Company" />
-              <p className='font-semibold text-lg'>Finora</p>
+              <p className='font-semibold text-lg'>Money Manager</p>
           </div>
           <div className='w-4/5 bg-white flex justify-end items-center gap-4'>
               {buttonNames.map((buttonName,ind) => (<NavButton name={buttonName}/>))}
