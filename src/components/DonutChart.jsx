@@ -5,7 +5,7 @@ const DonutChart = ({ principal, returns, total }) => {
   const roundedTotal = total.toFixed(2);
   const data = [
     { name: "Principal", value: principal, color: "#007bff" }, // Blue
-    { name: "Returns", value: returns, color: "#ffc107" }, // Yellow
+    { name: "Returns", value: returns, color: "#85EFC4" }, // Yellow
   ];
 
   return (
