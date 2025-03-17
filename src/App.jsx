@@ -6,7 +6,7 @@ import Charts from "./pages/Charts.jsx";
 import Expense from "./pages/Expense.jsx";
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import Layout from "./pages/Layout.jsx";
-
+import Savings from "./pages/Savings.jsx";
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <>
@@ -17,6 +17,7 @@ function App() {
       <Route path='/investment-calculator' element={<Calculator/>}></Route>
       <Route path='/investment' element={<Investment/>}></Route>
       <Route path='/home' element={<Home/>}></Route>
+      <Route path='/savings' element={<Savings/>}></Route>
     </Route>
   </>
   ));
