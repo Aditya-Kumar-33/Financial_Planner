@@ -1,5 +1,5 @@
 import React from "react";
-
+import Google from "../components/GoogleSignIn"
 
 const Login = () => {
   return (
@@ -8,12 +8,19 @@ const Login = () => {
     font-dm-sans">
 
     <div className="w-1/2 h-full bg-white flex flex-col justify-center">
-        <h2 className="text-3xl font-bold mb-2 text-start px-10">Login</h2>
-        <p className="text-gray-600 mb-4 px-10">See your growth</p>
+        <h2 className="text-[25px] font-bold  text-start px-10">Login</h2>
+        <p className="text-gray-600 text-[16px] mb-4 px-10">Smart tools for smarter financial decisions.</p>
         
         <div className="flex flex-col items-center justify-center">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md mb-4 hover:bg-blue-600">
-            Continue with Google
+        <button className="flex items-center justify-center px-4 py-1.5
+         bg-white border border-gray-300 rounded-3xl text-gray-800 
+         font-semibold transition hover:bg-gray-100 my-5">
+        <img
+            src="https://img.icons8.com/color/48/000000/google-logo.png"
+            alt="Google Logo"
+            className="w-6 mr-2"
+        />
+        <span>Continue with Google</span>
         </button>
         
         <div className="w-full max-w-sm">
@@ -52,7 +59,7 @@ const Login = () => {
             </button>
         </div>
         
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center flex justify-between">
             <p className="text-gray-700">Not registered yet?</p>
             <button className="text-blue-500 font-semibold hover:underline">Create an Account</button>
         </div>

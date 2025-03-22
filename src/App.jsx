@@ -7,6 +7,7 @@ import Expense from "./pages/Expense.jsx";
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import Layout from "./pages/Layout.jsx";
 import Login from "./pages/Login.jsx";
+import Savings from "./pages/Savings.jsx";
 
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
