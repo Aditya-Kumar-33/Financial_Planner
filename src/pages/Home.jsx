@@ -29,7 +29,8 @@ const Home = () => {
             <div className="absolute right-[10%] top-[40%] w-1/3 h-1/4 rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
                 
             </div>
-            <div className="absolute left-[10%] top-[55%] w-1/3 h-1/4 rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
+            <div className="absolute left-[10%] top-[55%] w-1/3 h-1/4 rounded-2xl 
+            bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
                 
             </div>
 
