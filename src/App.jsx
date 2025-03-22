@@ -18,6 +18,7 @@ function App() {
       <Route path='/investment-calculator' element={<Calculator/>}></Route>
       <Route path='/investment' element={<Investment/>}></Route>
       <Route path='/home' element={<Home/>}></Route>
+      <Route path='/savings' element={<Savings/>}></Route>
     </Route>
   </>
   ));

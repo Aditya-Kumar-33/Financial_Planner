@@ -17,7 +17,7 @@ export default function Modal({ open, setOpen, children }) {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)]"
+      className="fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] z-20"
       onClick={() => setOpen(false)}
       role="dialog"
       aria-hidden={!open}
