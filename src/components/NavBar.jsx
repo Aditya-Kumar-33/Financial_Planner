@@ -18,8 +18,7 @@ const NavBar = () => {
     { name: "Calculator", path: "/calculator", hasSubmenu: true },
     { name: "Expense", path: "/expense" },
     { name: "Investment", path: "/investment" },
-    { name: "News", path: "/news" },
-    { name: "Login", path: "/login" }
+    { name: "News", path: "/news" }
   ];
   
   const SubmenuCalculator = () => {
@@ -75,7 +74,7 @@ const NavBar = () => {
 
             {loggedIn ? (
               <>
-                <AnimatedButton text="Login" color="bg-[#85EFC4]" color2="bg-[#1E1F2B]" border="border-[#60A5FA]" text1="black" text2="text-[#FACC15]">
+                <AnimatedButton to={"/login"} text="Login" color="bg-[#85EFC4]" color2="bg-[#1E1F2B]" border="border-[#60A5FA]" text1="black" text2="text-[#FACC15]">
                   <MdAccountCircle />
                 </AnimatedButton>
               </>

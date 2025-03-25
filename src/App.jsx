@@ -8,11 +8,16 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Layout from "./pages/Layout.jsx";
 import Login from "./pages/Login.jsx";
 import Savings from "./pages/Savings.jsx";
+import Profile from "./pages/Profile.jsx";
+import SignUp from "./pages/SignUp.jsx";
 
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <>
     <Route path='/login' element={<Login/>}></Route>
+    <Route path='/signup' element={<SignUp/>}></Route>
+    <Route path='/profile' element={<Profile/>}></Route>
+
     <Route path="/" element={<Layout/>}>
       <Route index element={<Home/>}></Route>
       <Route path='/expense-calculator' element={<Expense/>}></Route>
