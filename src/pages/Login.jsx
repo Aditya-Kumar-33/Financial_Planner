@@ -1,5 +1,4 @@
 import React from "react";
-import Google from "../components/GoogleSignIn"
 
 const Login = () => {
   return (
