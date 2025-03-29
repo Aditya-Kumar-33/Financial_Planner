@@ -1,23 +1,49 @@
-import React, { useState } from 'react';
-import { User, Lock, Mail, Phone, Building2, Briefcase, Calendar, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Lock, Mail, Briefcase, Calendar, Globe, PersonStanding } from 'lucide-react';
 
-const countries = ['India', 'USA', 'Canada', 'UK', 'Australia']; // Add more as needed
+const countries = ['India', 'USA', 'Canada', 'UK', 'Australia']; 
+const genderOptions = ["Male", "Female", "Other"];
+const employmentTypes = ["Full-time", "Part-time", "Freelancer", "Unemployed"];
+
+// Currency mapping for each country
+const countryCurrencyMap = {
+  'India': { currency: 'INR', symbol: '₹' },
+  'USA': { currency: 'USD', symbol: '$' },
+  'Canada': { currency: 'CAD', symbol: 'C$' },
+  'UK': { currency: 'GBP', symbol: '£' },
+  'Australia': { currency: 'AUD', symbol: 'A$' }
+};
 
 const SignUp = () => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
+  
   const [formData, setFormData] = useState({
-    Name: '',
+    name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
-    companyName: '',
     jobTitle: '',
-    dateOfBirth: '',
-    country: '',
+    employmentType: '',
+    dob: '',
+    gender: '',
+    country: 'India', // Default country is India
+    currency: 'INR', // Default currency is INR
   });
 
+  const [currencyDisplay, setCurrencyDisplay] = useState({ currency: 'INR', symbol: '₹' });
   const [errors, setErrors] = useState({});
+
+  // Update currency when country changes
+  useEffect(() => {
+    if (formData.country && countryCurrencyMap[formData.country]) {
+      const newCurrencyInfo = countryCurrencyMap[formData.country];
+      setCurrencyDisplay(newCurrencyInfo);
+      setFormData(prev => ({
+        ...prev,
+        currency: newCurrencyInfo.currency
+      }));
+    }
+  }, [formData.country]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +56,7 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.Name.trim()) newErrors.Name = 'Full name is required';
+    if (!formData.name.trim()) newErrors.name = 'Full name is required';
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
@@ -39,10 +65,7 @@ const SignUp = () => {
       newErrors.email = 'Invalid email format';
     }
 
-    const phoneRegex = /^[+]?[\d\s()-]{10,}$/;
-    if (formData.phone && !phoneRegex.test(formData.phone)) {
-      newErrors.phone = 'Invalid phone number';
-    }
+
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -63,10 +86,40 @@ const SignUp = () => {
     if (validateForm()) setStep(2);
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Final Form Data:', formData);
-    alert('Sign-up successful!');
+    
+    // Create data object to match backend schema
+    const userData = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      dob: formData.dob,
+      gender: formData.gender,
+      country: formData.country,
+      currency: formData.currency,
+      jobTitle: formData.jobTitle,
+      employmentType: formData.employmentType
+    };
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert('Sign-up successful!');
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -88,7 +141,7 @@ const SignUp = () => {
               {step === 1 && (
                 <>
                   <div className='flex justify-center'>
-                    <button className="flex items-center justify-center px-4 py-1.5
+                    <button type="button" className="flex items-center justify-center px-4 py-1.5
                     bg-white border border-gray-300 rounded-3xl text-gray-800
                     font-semibold transition hover:bg-gray-100 my-5">
                     <img
@@ -100,22 +153,22 @@ const SignUp = () => {
                     </button>
                   </div>
                   <div className="relative">
-                    <label htmlFor="Name" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                       Full Name
                     </label>
                     <div className="flex items-center">
                       <User className="absolute left-3 text-gray-400" size={20} />
                       <input
                         type="text"
-                        id="Name"
-                        name="Name"
-                        value={formData.Name}
+                        id="name"
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
                         className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                         placeholder="Enter Your Full Name"
                       />
                     </div>
-                    {errors.Name && <p className="text-red-500 text-xs mt-1">{errors.Name}</p>}
+                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div className="relative">
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -135,25 +188,7 @@ const SignUp = () => {
                     </div>
                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                   </div>
-                  <div className="relative">
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone Number
-                    </label>
-                    <div className="flex items-center">
-                      <Phone className="absolute left-3 text-gray-400" size={20} />
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter Your Phone Number"
-                      />
-                    </div>
-                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-                    
-                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
                       <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -193,34 +228,17 @@ const SignUp = () => {
                       {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
                     </div>
                   </div>
-                  <button onClick={(e) => handleNext(e)}
-                  className="w-full bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600">
+                  <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600">
                     Continue
                   </button>
                 </>
               )}
               {step === 2 && (
                 <>
-                  <div className="relative">
-                    <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
-                      Company Name (Optional)
-                    </label>
-                    <div className="flex items-center">
-                      <Building2 className="absolute left-3 text-gray-400" size={20} />
-                      <input
-                        type="text"
-                        id="companyName"
-                        name="companyName"
-                        value={formData.companyName}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        placeholder="Company Name"
-                      />
-                    </div>
-                  </div>
+                  
                   <div className="relative">
                     <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700 mb-1">
-                      Job Title (Optional)
+                      Job Title
                     </label>
                     <div className="flex items-center">
                       <Briefcase className="absolute left-3 text-gray-400" size={20} />
@@ -234,33 +252,105 @@ const SignUp = () => {
                         placeholder="Job Title"
                       />
                     </div>
-                  </div>
+                  </div>                
+
                   <div className="relative">
-                    <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
-                      Country (Optional)
+                    <label htmlFor="employmentType" className="block text-sm font-medium text-gray-700 mb-1">
+                      Employment Type
                     </label>
-                    <div className="flex items-center">
-                      <Globe className="absolute left-3 text-gray-400" size={20} />
-                      <select
-                        id="country"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">Select Country</option>
-                        {countries.map((country) => (
-                          <option key={country} value={country}>
-                            {country}
-                          </option>
-                        ))}
-                      </select>
+                    <select
+                      id="employmentType"
+                      name="employmentType"
+                      value={formData.employmentType}
+                      onChange={handleChange}
+                      className="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Employment Type</option>
+                      {employmentTypes.map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div className='flex flex-col-2 gap-2'>
+                    <div className="relative w-full">
+                      <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
+                        Date of Birth
+                      </label>
+                      <div className="flex items-center">
+                        <Calendar className="absolute left-3 text-gray-400" size={20} />
+                        <input
+                          type="date"
+                          id="dob"
+                          name="dob"
+                          value={formData.dob}
+                          onChange={handleChange}
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full">
+                      <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+                        Gender
+                      </label>
+                      <div className='flex items-center'>
+                        <PersonStanding className="absolute left-1 text-gray-400" size={20} />
+                        <select
+                          id="gender"
+                          name="gender"
+                          value={formData.gender}
+                          onChange={handleChange}
+                          className="w-full pl-6 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select Gender</option>
+                          {genderOptions.map((g) => (
+                            <option key={g} value={g}>{g}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
+
+                  <div className='flex gap-2'>
+                    <div className="relative w-[85%]">
+                      <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                        Country
+                      </label>
+                      <div className="flex items-center">
+                        <Globe className="absolute left-3 text-gray-400" size={20} />
+                        <select
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select Country</option>
+                          {countries.map((country) => (
+                            <option key={country} value={country}>
+                              {country}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="relative w-[15%]">
+                      <label htmlFor="currency" className="block text-sm font-medium text-gray-700 mb-1">
+                        Currency
+                      </label>
+                      <div className="flex items-center justify-center h-10 bg-gray-100 border border-gray-300 rounded-md mt-1 p-2">
+                        <span className="font-medium">{currencyDisplay.symbol}</span>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className='flex justify-between'>
-                  <button className="text-blue-500 hover:underline">
-                      Skip for now
-                    </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Skip for Now
+                  </button>
                     <button type="submit" className="w-1/2 bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600">
                       Submit
                     </button>

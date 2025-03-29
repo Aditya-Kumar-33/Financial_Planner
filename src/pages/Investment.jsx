@@ -89,19 +89,20 @@ const Investment = () => {
         </div>
 
         <div className="col-span-4">
-          <div className="grid grid-cols-4 px-6 h-[150px]">
+          <div className="grid grid-cols-5 px-6 h-[150px]">
             {[
               { label: "Total Invested", value: "₹2,50,000" },
-              { label: "Expected Maturity", value: "₹3,75,000" },
-              { label: "Expected Returns", value: "₹1,25,000" },
-              { label: "SIP This Month", value: "₹10,000" },
+              { label: "SIP This Month", value: "₹10,000", color: "text-blue-500" },
+              { label: "Current Investment", value: "₹3,50,000" },
+              { label: "Expected Returns", value: "₹1,25,000", color: "text-green-500" },
+              { label: "Expected Maturity", value: "₹3,75,000", color: "" },
             ].map((item, index) => (
               <div key={index} className="flex justify-center items-center">
                 <div className="h-[80%] w-[90%] rounded-2xl 
                 bg-gradient-to-b from-[#111125] to-transparent 
                 shadow-[0_-4px_10px_rgba(255,255,255,0.3)] 
                 flex flex-col justify-center items-center text-white/70">
-                  <div className="text-3xl">{item.value}</div>
+                  <div className={`text-3xl ${item.color || ""} font-bold`}>{item.value}</div>
                   <div>{item.label}</div>
                 </div>
               </div>
