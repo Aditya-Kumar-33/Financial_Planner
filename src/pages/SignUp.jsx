@@ -26,8 +26,8 @@ const SignUp = () => {
     employmentType: '',
     dob: '',
     gender: '',
-    country: 'India', // Default country is India
-    currency: 'INR', // Default currency is INR
+    country: 'India', 
+    currency: 'INR', 
   });
 
   const [currencyDisplay, setCurrencyDisplay] = useState({ currency: 'INR', symbol: '₹' });
@@ -64,8 +64,6 @@ const SignUp = () => {
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = 'Invalid email format';
     }
-
-
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -351,7 +349,8 @@ const SignUp = () => {
                   >
                     Skip for Now
                   </button>
-                    <button type="submit" className="w-1/2 bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600">
+                    <button type="submit" className="w-1/2 bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600"
+                    onClick={handleSubmit}>
                       Submit
                     </button>
                   </div>

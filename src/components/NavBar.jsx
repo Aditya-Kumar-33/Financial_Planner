@@ -18,7 +18,7 @@ const NavBar = () => {
     { name: "Calculator", path: "/calculator", hasSubmenu: true },
     { name: "Expense", path: "/expense" },
     { name: "Investment", path: "/investment" },
-    { name: "News", path: "/news" }
+    { name: "Facts", path: "/facts" }
   ];
   
   const SubmenuCalculator = () => {

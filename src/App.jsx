@@ -10,6 +10,8 @@ import Login from "./pages/Login.jsx";
 import Savings from "./pages/Savings.jsx";
 import Profile from "./pages/Profile.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import Trends from "./pages/Trends.jsx";
+import Facts from "./pages/Facts.jsx";
 
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
@@ -25,6 +27,8 @@ function App() {
       <Route path='/investment' element={<Investment/>}></Route>
       <Route path='/home' element={<Home/>}></Route>
       <Route path='/savings' element={<Savings/>}></Route>
+      <Route path='/trends' element={<Trends/>}></Route>
+      <Route path='/facts' element={<Facts/>}></Route>
     </Route>
   </>
   ));
@@ -33,20 +37,6 @@ function App() {
     <RouterProvider router={router}/> 
   </>
 
-  return (
-    <Router>
-      <Routes>
-        <Route 
-          index 
-          element={
-          <div className="h-screen w-screen relative">
-            <NavBar/>
-            <Expense/>
-          </div>} 
-        />
-      </Routes>
-    </Router>
-  );
 }
 
 export default App;
