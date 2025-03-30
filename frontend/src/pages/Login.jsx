@@ -1,71 +1,187 @@
-import React from "react";
+import React, { useState } from "react";
+import { Mail, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const navigate = useNavigate();
-  return (
-    <div className="h-screen flex 
-    bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318] 
-    font-dm-sans">
+  const navigate = useNavigate();
 
-    <div className="w-1/2 h-full bg-white flex flex-col justify-center">
-        <h2 className="text-[25px] font-bold  text-start px-10">Login</h2>
-        <p className="text-gray-600 text-[16px] mb-4 px-10">Smart tools for smarter financial decisions.</p>
-        
-        <div className="flex flex-col items-center justify-center">
-        <button className="flex items-center justify-center px-4 py-1.5
-         bg-white border border-gray-300 rounded-3xl text-gray-800 
-         font-semibold transition hover:bg-gray-100 my-5">
-        <img
-            src="https://img.icons8.com/color/48/000000/google-logo.png"
-            alt="Google Logo"
-            className="w-6 mr-2"
-        />
-        <span>Continue with Google</span>
-        </button>
-        
-        <div className="w-full max-w-sm">
-            <label className="block text-gray-700 font-semibold mb-1">Username*</label>
-            <input 
-            type="text" 
-            className="w-full border rounded-md p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter your username"
-            />
-            
-            <div className="text-center text-gray-500 my-2">or</div>
-            
-            <label className="block text-gray-700 font-semibold mb-1">Email*</label>
-            <input 
-            type="email" 
-            className="w-full border rounded-md p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter your email"
-            />
-            
-            <label className="block text-gray-700 font-semibold mb-1">Password*</label>
-            <input 
-            type="password" 
-            className="w-full border rounded-md p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter your password"
-            />
-            
-            <div className="flex justify-between items-center mb-4">
-            <label className="flex items-center text-gray-700">
-                <input type="checkbox" className="mr-2" /> Remember me
-            </label>
-            <a href="#" className="text-blue-500 hover:underline">Forgot password?</a>
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  // Handle form changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Validate form before submission
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Login successful!");
+        navigate("/dashboard"); // Redirect to dashboard after login
+      } else {
+        alert(data.message || "Invalid email or password");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  return (
+    <div
+      className="h-screen flex 
+    bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318] 
+    font-dm-sans"
+    >
+      <div className="w-1/2 h-full bg-white flex flex-col justify-center">
+        <div className="w-full h-full shadow-lg rounded-xl p-8 pb-0 space-y-6">
+          {/* Header Section */}
+          <div className="mt-8">
+            <h2 className="text-[25px] font-bold text-start">Login</h2>
+            <p className="text-gray-600 text-[16px]">Access your account now</p>
+          </div>
+
+          {/* Google Sign-In */}
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="flex items-center justify-center px-4 py-1.5
+                bg-white border border-gray-300 rounded-3xl text-gray-800
+                font-semibold transition hover:bg-gray-100 my-5"
+            >
+              <img
+                src="https://img.icons8.com/color/48/000000/google-logo.png"
+                alt="Google Logo"
+                className="w-6 mr-2"
+              />
+              <span>Continue with Google</span>
+            </button>
+          </div>
+
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="space-y-4 w-[60%] mx-auto">
+            {/* Email Field */}
+            <div className="relative">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email Address
+              </label>
+              <div className="flex items-center">
+                <Mail className="absolute left-3 text-gray-400" size={20} />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your email"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div className="relative">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Password
+              </label>
+              <div className="flex items-center">
+                <Lock className="absolute left-3 text-gray-400" size={20} />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                  placeholder="********"
+                />
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600"
+            >
+              Login
+            </button>
+
+            <div className="flex justify-between">
+                <div className="flex gap-1">
+                    <input type="checkbox" name="" id="" />
+                    <span>Remember Me</span>
+                </div>
+                <a href="#" className="text-blue-500 hover:underline">
+                    Forgot password?
+                </a>
             </div>
             
-            <button className="w-full bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600">
-            Login
-            </button>
+            {/* Forgot Password & Create Account Links */}
+            <div className="flex justify-center items-center mt-4">
+              <div className="flex flex-col gap-2 items-center">
+                <p className="text-gray-700">Not registered yet?</p>
+                <button
+                  onClick={() => navigate("/signup")}
+                  className="text-blue-500 font-semibold hover:underline"
+                >
+                  Create an Account
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-        
-        <div className="mt-6 text-center flex justify-between gap-2">
-            <p className="text-gray-700">Not registered yet?</p>
-            <button onClick={() => navigate("/signup")} className="text-blue-500 font-semibold hover:underline">Create an Account</button>
-        </div>
-        </div>
-        </div>
+      </div>
     </div>
   );
 };
