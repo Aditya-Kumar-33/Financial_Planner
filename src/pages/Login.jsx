@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
   return (
     <div className="h-screen flex 
     bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318] 
@@ -58,9 +60,9 @@ const Login = () => {
             </button>
         </div>
         
-        <div className="mt-6 text-center flex justify-between">
+        <div className="mt-6 text-center flex justify-between gap-2">
             <p className="text-gray-700">Not registered yet?</p>
-            <button className="text-blue-500 font-semibold hover:underline">Create an Account</button>
+            <button onClick={() => navigate("/signup")} className="text-blue-500 font-semibold hover:underline">Create an Account</button>
         </div>
         </div>
         </div>
