@@ -12,13 +12,14 @@ import Profile from "./pages/Profile.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import Trends from "./pages/Trends.jsx";
 import Facts from "./pages/Facts.jsx";
-
+import ATEST from "./pages/atest.jsx";
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <>
     <Route path='/login' element={<Login/>}></Route>
     <Route path='/signup' element={<SignUp/>}></Route>
     <Route path='/profile' element={<Profile/>}></Route>
+    <Route path='/test' element={<ATEST/>}></Route>
 
     <Route path="/" element={<Layout/>}>
       <Route index element={<Home/>}></Route>

@@ -43,21 +43,34 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) return;
-
+  
+    const userData = {
+      email: formData.email,
+      password: formData.password
+    };
+  
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("http://localhost:5000/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(userData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         alert("Login successful!");
-        navigate("/dashboard"); // Redirect to dashboard after login
+  
+        // Store user details and token in localStorage
+        localStorage.setItem("user", JSON.stringify({ 
+          name: data.name, 
+          email: data.email,
+          _id:data._id,
+          token: data.token 
+        }));
+        navigate("/test"); // Redirect to dashboard
       } else {
         alert(data.message || "Invalid email or password");
       }
@@ -168,7 +181,7 @@ const Login = () => {
             </div>
             
             {/* Forgot Password & Create Account Links */}
-            <div className="flex justify-center items-center mt-4">
+            <div className="flex justify-center items-center mt-16">
               <div className="flex flex-col gap-2 items-center">
                 <p className="text-gray-700">Not registered yet?</p>
                 <button
