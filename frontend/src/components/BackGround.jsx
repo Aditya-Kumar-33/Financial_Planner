@@ -1,6 +1,9 @@
 import React from "react";
 
 const BackGround = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user ? user._id : null;
+
   return (
     <div>
       {/* gradient background */}

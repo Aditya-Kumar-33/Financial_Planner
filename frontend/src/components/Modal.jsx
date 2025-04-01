@@ -1,8 +1,8 @@
+import { X } from "lucide-react";
 import React, { useEffect } from "react";
 
 export default function Modal({ open, setOpen, children }) {
   if (!open) return null;
-
 
   //Escape key close
   useEffect(() => {
@@ -22,19 +22,17 @@ export default function Modal({ open, setOpen, children }) {
       role="dialog"
       aria-hidden={!open}
     >
-      <div
-        className="w-[85%] h-[80%] bg-[#121323]/99 p-5 rounded-md shadow-[0_0_15px_rgba(0,0,0,0.7)]"
-        onClick={(e) => e.stopPropagation()} // modal won't close when clicking inside
-      >
-        {children}
-        <div className="flex justify-center">
-        <button
-          className="mt-3 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+      <button
+          className="absolute top-[3%] right-[4%] bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
           onClick={() => setOpen(false)}
         >
-          Close
+          <X/>
         </button>
-        </div>
+      <div
+        className="w-[85%] h-[80%] bg-[#121323]/99 p-5 rounded-md shadow-[0_0_15px_rgba(0,0,0,0.7)]"
+        onClick={(e) => e.stopPropagation()} 
+      >
+        
       </div>
     </div>
   );

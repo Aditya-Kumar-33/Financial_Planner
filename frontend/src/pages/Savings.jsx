@@ -1,90 +1,152 @@
-import React, { useState } from "react";
-import { Plus } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Cross, Plus } from "lucide-react";
 import ExpensesAdd from "../components/ExpensesAdd";
-import Modal from"../components/Modal";
+import SavingsModal from "../components/SavingsModal";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import ButtonWMY from "../components/ButtonWMY"
+import ButtonPattern from "../components/Buttons/ButtonPattern";
+import axios from "axios";
+import DateSelector from "../components/DateSelector";
+import TypeToggle from "../components/Buttons/TypeToggle";
+
+
 const Savings = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Define all necessary states
-  const [date, setDate] = useState("");
-  const [day, setDay] = useState("");
-  const [type, setType] = useState("");
-  const [subtype, setSubtype] = useState("");
-  const [form, setForm] = useState("");
-  const [amount, setAmount] = useState("");
-  const [time, setTime] = useState("");
-  
+  // Date pattern selection states
+  const [pattern, setPattern] = useState("Daily");
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7));
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const expensesInfor = [
-    {
-      Date: "21st March 2025",
-      Day: "Friday",
-      Type: "Travel",
-      Subtype: 'Metro',
-      Form: "UPI",
-      Amount:'200',
-      Time: "10:30 AM"  
-    },
-    {
-      Date: "21st March 2025",
-      Day: "Friday",
-      Type: "Food",
-      Subtype: 'Street',
-      Form: "Cash",
-      Amount:"710",
-      Time: "01:15 M" 
-    },
-    {
-      Date: "21st March 2025",
-      Day: "Friday",
-      Type: "Travel",
-      Subtype: 'Metro',
-      Form: "UPI",
-      Amount:'200',
-      Time: "10:30 AM"  
-    },
-    {
-      Date: "21st March 2025",
-      Day: "Friday",
-      Type: "Food",
-      Subtype: 'Street',
-      Form: "Cash",
-      Amount:"710",
-      Time: "01:15 M" 
-    },
-    {
-      Date: "19st March 2025",
-      Day: "Wednesday",
-      Type: "Miscellaneous",
-      Subtype: 'Charity',
-      Form: "UPI",
-      Amount:'100',
-      Time: "10:30 AM"  
-    },
-  ];
-  const [income, setIncome] = useState(250000);
-  const expenses = expensesInfor.reduce((sum, item) => sum + parseInt(item.Amount), 0);
-  const total = income - expenses;
-  const [isAddModalOpen,setIsAddModalOpen] = useState(false);
+  // Data states
+  const [savings, setSavings] = useState([]); //complete list
+  const [filteredSavings, setFilteredSavings] = useState([]); //pattern based list
+  const [income, setIncome] = useState(0);
+  const [expenses, setExpenses] = useState(0);
+  const [balance, setBalance] = useState(0);
 
-  const getExpenseData = () => {
-    const expenseMap = {};
-  
-    expensesInfor.forEach(expense => {
-      if (expenseMap[expense.Type]) {
-        expenseMap[expense.Type] += parseInt(expense.Amount);
-      } else {
-        expenseMap[expense.Type] = parseInt(expense.Amount);
+  const [selectedType, setSelectedType] = useState("Expense");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+
+    // if (!user) return;
+    axios.get("http://localhost:5000/savings", {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+    .then(response => setSavings(response.data))
+    .catch(error => console.error("Error fetching savings:", error));
+  }, []);
+
+
+  // Filter data whenever pattern or date selection changes
+  useEffect(() => {
+    filterSavingsByPattern();
+  }, [pattern, selectedDate, selectedMonth, selectedYear, savings]);
+
+  // Calculate totals whenever filtered data changes
+  useEffect(() => {
+    calculateTotals();
+  }, [filteredSavings]);
+
+
+  // Filter savings based on selected pattern and date
+  const filterSavingsByPattern = () => {
+
+    if (!Array.isArray(savings) || !savings.length) {
+      setFilteredSavings([]);
+      return;
+    }
+
+    let filtered = [];
+    
+    if (pattern === "Daily") {
+      filtered = savings.filter(saving => {
+        const savingDate = new Date(saving.dateTime).toISOString().split("T")[0];
+        return savingDate === selectedDate;
+      });
+    } else if (pattern === "Monthly") {
+      filtered = savings.filter(saving => {
+        const savingMonth = new Date(saving.dateTime).toISOString().slice(0, 7);
+        return savingMonth === selectedMonth;
+      });
+    } else if (pattern === "Yearly") {
+      filtered = savings.filter(saving => {
+        const savingYear = new Date(saving.dateTime).getFullYear();
+        return savingYear === parseInt(selectedYear);
+      });
+    }
+    
+    setFilteredSavings(filtered);
+  };
+
+  // Calculate income, expenses and balance
+  const calculateTotals = () => {
+    if (!Array.isArray(filteredSavings)) {
+      setIncome(0);
+      setExpenses(0);
+      setBalance(0);
+      return;
+    }
+    
+    let totalIncome = 0;
+    let totalExpenses = 0;
+    
+    filteredSavings.forEach(item => {
+      if (item.type === "Income") {
+        totalIncome += parseFloat(item.amount) || 0;
+      } else if (item.type === "Expense") {
+        totalExpenses += parseFloat(item.amount) || 0;
       }
     });
-  
-    return Object.keys(expenseMap).map((key) => ({
-      name: key,
-      value: expenseMap[key]
+    
+    setIncome(totalIncome);
+    setExpenses(totalExpenses);
+    setBalance(totalIncome - totalExpenses);
+  };
+
+  // Prepare data for the pie chart
+  const getExpenseData = () => {
+    if (!Array.isArray(filteredSavings) || !filteredSavings.length) return [];
+    
+    // Group expenses by category
+    const expensesByCategory = {};
+    
+    filteredSavings.filter(item => item.type === "Expense").forEach(expense => {
+      if (!expensesByCategory[expense.category]) {
+        expensesByCategory[expense.category] = 0;
+      }
+      expensesByCategory[expense.category] += parseFloat(expense.amount) || 0;
+    });
+    
+    // Convert to array format for the pie chart
+    return Object.keys(expensesByCategory).map(category => ({
+      name: category,
+      value: expensesByCategory[category]
     }));
   };
-  
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (error) {
+      return "Invalid date";
+    }
+  };
+
+  // Format time for display
+  const formatTime = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (error) {
+      return "Invalid time";
+    }
+  };
+
   const expenseData = getExpenseData();
   const COLORS = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"];
 
@@ -95,43 +157,61 @@ const Savings = () => {
 
       <div className="h-[85%] w-[100%] mt-30 grid grid-cols-10">
         <div className="mt-[3vh] ml-[2vh] col-span-3
-         text-white flex flex-col border-r border-white/30 pr-2">
-          <div className="flex justify-center"> <ButtonWMY/> </div>
+         text-white flex flex-col border-r border-white/30 pr-2 ">
+
+          <div className="flex justify-center flex-col items-center gap-3"> 
+            <ButtonPattern selectedPattern={pattern} setSelectedPattern={setPattern}/> 
+            <DateSelector 
+              pattern={pattern} 
+              selectedDate={selectedDate} 
+              setSelectedDate={setSelectedDate} 
+              selectedMonth={selectedMonth} 
+              setSelectedMonth={setSelectedMonth} 
+              selectedYear={selectedYear} 
+              setSelectedYear={setSelectedYear}
+            />
+            <TypeToggle selectedType={selectedType} 
+              setSelectedType={setSelectedType} 
+            />
+          </div>
           <div className="w-full flex justify-center">
-            <PieChart width={350} height={350}>
-              <Pie
-                data={expenseData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {expenseData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
+            {expenseData.length > 0 ? (
+              <PieChart width={350} height={350}>
+                <Pie
+                  data={expenseData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                >
+                  {expenseData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
 
         <div className="col-span-7">
-
-          <div className="grid grid-cols-3 h-[120px]">
+          <div className="grid grid-cols-3 h-[120px] ">
           {[
-              { label: "Income", value: `₹${income}` , color: "text-green-500" },
-              { label: "Expenses", value: `₹${expenses}` , color: "text-red-500" },
-              { label: "Total", value: `₹${total}` , color: "text-white" },
+              { label: "Income", value: `₹${income.toFixed(2)}`, color: "text-green-500" },
+              { label: "Expenses", value: `₹${expenses.toFixed(2)}`, color: "text-red-500" },
+              { label: "Net Balance", value: `₹${balance.toFixed(2)}`, color: "text-blue-500" },
             ].map((item, index) => (
               <div key={index} className="flex justify-center items-center">
                 <div className="h-[80%] w-[90%] rounded-2xl 
                   bg-gradient-to-b from-[#111125] to-transparent 
                   shadow-[0_-4px_10px_rgba(255,255,255,0.3)] 
-                  flex flex-col justify-center items-center text-white/70">
-                  <div className={`text-3xl ${item.color}`}>
+                  flex flex-col justify-center items-center text-white/70 ">
+                  <div className={`text-3xl font-manrope font-semibold ${item.color}`}>
                     {item.value}
                   </div>
                   <div>{item.label}</div>
@@ -140,57 +220,57 @@ const Savings = () => {
             ))}
           </div>
 
-          <div className="w-full flex flex-col items-center gap-2">
+          <div className="w-full flex flex-col items-center gap-4">
             {/* Title Row */}
-            <div className="flex items-center h-[50px] text-white/50 p-3 pb-0 w-[95%]">
-              <div className="flex-1 text-center gap-1"><div>Date/Day</div></div>
-              <div className="flex-1 text-center">Amount</div>
-              <div className="flex-1 flex flex-col text-center"><div>Category</div></div>
-              <div className="flex-1 flex flex-col text-center"><div>Form</div></div>
+            <div className="items-center h-[50px] text-white/50 p-3 pb-0 w-[95%] grid grid-cols-5 gap-2">
+              <div className="text-center gap-1"><div>Date/Time</div></div>
+              <div className="text-center">Amount</div>
+              <div className="text-center">Category</div>
+              <div className="text-center"><div>Payment Method</div></div>
+              <div className="text-center"><div>Note</div></div>
             </div>
             
-            {expensesInfor.map((expense, index) => ( 
-              <div key={index} className="flex  items-center text-white p-5 w-[95%] rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] transition-transform duration-300 ease-in-out hover:scale-102 hover:cursor-pointer">
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="text-xl pl-5">{expense.Date}</div>
-                  <div className="pl-5">{expense.Day}</div>
+            {Array.isArray(filteredSavings) && filteredSavings.length > 0 ? (
+              filteredSavings.map((item, index) => ( 
+                <div key={index} className="grid grid-cols-5 items-center text-white p-5 w-[95%] rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] transition-transform duration-300 ease-in-out hover:scale-102 hover:cursor-pointer">
+                  <div className="flex-1 flex flex-col gap-1">
+                    <div className="text-xl pl-5">{formatDate(item.dateTime)}</div>
+                    <div className="pl-5">{formatTime(item.dateTime)}</div>
+                  </div>
+                  <div className={`flex-1 text-center text-xl font-bold ${item.type === "Income" ? "text-green-400" : "text-red-400"}`}>
+                    ₹{parseFloat(item.amount).toFixed(2)}
+                  </div>
+                  <div className="flex-1 flex flex-col text-center gap-1 text-md">
+                    <div>{item.category}</div>
+                    {item.subCategory && <div className="text-blue-400">{item.subCategory}</div>}
+                  </div>
+                  <div className="flex-1 flex flex-col gap-1 text-center text-md">
+                    <div>{item.paymentMethod}</div>
+                  </div>
+                  <div className="flex-1 text-center text-lg">
+                    {(item.description.slice(0, 15) + (item.description.length > 15 ? "..." : "") )}
+                  </div>
                 </div>
-                <div className="flex-1 text-center text-blue-400 text-xl font-bold">₹{expense.Amount}</div>
-                <div className="flex-1 flex flex-col gap-1 text-center text-md">
-                  <div>{expense.Type}</div>
-                  <div className="text-green-400">{expense.Subtype}</div>
-                </div>
-                <div className="flex-1 flex flex-col text-center gap-1 text-md">
-                  <div>{expense.Form}</div>
-                  <div>{expense.Time || "N/A"}</div>
-                </div>
+              ))
+            ) : (
+              <div className="text-white/50 text-center py-8">
+                No transactions found for the selected period
               </div>
-            ))}
-
+            )}
           </div>
         </div>
       </div>
 
       {/* Floating Button and Modal for Adding Expenses */}
       <button
-        className="fixed bottom-10 right-16 bg-[#85EFC4] text-black p-4 rounded-full shadow-lg hover:bg-[#62be99] hover:cursor-pointer transition duration-300 flex items-center justify-center"
+        className="fixed bottom-10 right-16 bg-[#85EFC4] text-black p-2 rounded-full shadow-lg hover:bg-[#62be99] hover:cursor-pointer transition duration-300 flex items-center justify-center"
         onClick={() => setIsAddModalOpen(true)}
       >
-        + Add Expense
+        <Plus size={35}/>
       </button>
 
       {/* Modal containing ExpensesAdd */}
-      <Modal open={isAddModalOpen} setOpen={setIsAddModalOpen}>
-        <ExpensesAdd
-          date={date} setDate={setDate}
-          day={day} setDay={setDay}
-          type={type} setType={setType}
-          subtype={subtype} setSubtype={setSubtype}
-          form={form} setForm={setForm}
-          amount={amount} setAmount={setAmount}
-          time={time} setTime={setTime}
-        />
-      </Modal>
+      <SavingsModal open={isAddModalOpen} setOpen={setIsAddModalOpen}/>
     </div>
   );
 };
