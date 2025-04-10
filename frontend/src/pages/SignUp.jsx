@@ -100,22 +100,12 @@ const SignUp = () => {
       jobTitle: formData.jobTitle,
       employmentType: formData.employmentType
     };
-  
-    try {
-      const response = await fetch('http://localhost:5000/user/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      });
 
-      const data = await response.json();
-      if (response.ok) {
-        alert('Sign-up successful!');
-      } else {
-        alert(data.message);
-      }
+    try {
+      const response = await axios.post("http://localhost:5000/user/signup", userData);
+      alert("Sign-up successful!");
     } catch (error) {
-      console.error('Error:', error);
+      alert(error.response?.data?.message || "Sign-up failed!");
     }
   };
 
@@ -357,6 +347,17 @@ const SignUp = () => {
               )}
             </form>
           </div>
+          <div className="flex justify-center items-center mt-16">
+              <div className="flex flex-col gap-2 items-center">
+                <p className="text-gray-700">Already has an account?</p>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="text-blue-500 font-semibold hover:underline"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
         </div>
       </div>
     </div>
