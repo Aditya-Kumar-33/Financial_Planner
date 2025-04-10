@@ -20,7 +20,8 @@ export default function InvestmentAdd({
   setCompoundingType,
   sip,
   setSip,
-  onSave
+  onSave,
+  isEdit = false,
 }) {
   // Define all major investment types
   const investmentTypes = [
@@ -37,29 +38,22 @@ export default function InvestmentAdd({
 
   const compoundingTypes = ["Weekly", "Monthly", "Yearly"];
 
-  // Handle Save Button Click
   const handleSave = () => {
-    const investmentData = {
-      name,
-      type,
-      institution,
-      invested,
-      startDate,
-      maturityDate,
-      interestRate,
-      compoundingType,
-      sip,
+    const data = {
+      name, type, institution,
+      invested, startDate, maturityDate,
+      interestRate, compoundingType, sip,
     };
-    
-    console.log(investmentData);
-    onSave(investmentData);
+    onSave(data);
   };
 
   return (
     <div className="p-5 text-white rounded-lg flex flex-col items-center">
-      <h1 className="text-xl font-semibold mb-4">Add your investment</h1>
+      <h1 className="text-xl font-semibold mb-4">
+        {isEdit ? "Edit Investment" : "Add Your Investment"}
+      </h1>
       <div className="grid grid-cols-3 gap-5 w-full">
-        <InputBox
+      <InputBox
           type="text"
           label="Investment Name"
           placeholder="Enter name"
@@ -76,7 +70,7 @@ export default function InvestmentAdd({
         <InputBox
           type="text"
           label="Institution"
-          placeholder="e.g., SBI"
+          placeholder="Enter Name of Institution"
           value={institution}
           onChange={setInstitution}
         />
@@ -123,12 +117,11 @@ export default function InvestmentAdd({
         />
       </div>
 
-      {/* Save Button */}
       <button
         onClick={handleSave}
-        className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300"
+        className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg hover:cursor-pointer hover:scale-105 duration-300 transition"
       >
-        Save Investment
+        {isEdit ? "Update Investment" : "Save Investment"}
       </button>
     </div>
   );

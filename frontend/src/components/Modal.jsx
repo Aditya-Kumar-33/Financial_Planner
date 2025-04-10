@@ -23,7 +23,7 @@ export default function Modal({ open, setOpen, children }) {
       aria-hidden={!open}
     >
       <button
-          className="absolute top-[3%] right-[4%] bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+          className="absolute top-[3%] right-[4%] bg-red-500 text-white p-2 rounded-full hover:bg-red-600 hover:scale-105 hover:cursor-pointer duration-300"
           onClick={() => setOpen(false)}
         >
           <X/>
@@ -32,7 +32,7 @@ export default function Modal({ open, setOpen, children }) {
         className="w-[85%] h-[80%] bg-[#121323]/99 p-5 rounded-md shadow-[0_0_15px_rgba(0,0,0,0.7)]"
         onClick={(e) => e.stopPropagation()} 
       >
-        
+        {children}
       </div>
     </div>
   );

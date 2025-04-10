@@ -45,6 +45,7 @@ const Investment = () => {
 
   // Modal state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
   // Function to add a new investment to the list
   const addInvestment = (newInvestment) => {
@@ -60,6 +61,45 @@ const Investment = () => {
     const userLoggedIn = localStorage.getItem("isLoggedIn");
     setIsAuthenticated(userLoggedIn === "true");
   }, []);
+
+  // open modal to add new
+  const handleAddClick = () => {
+    setEditIndex(null);
+    setName(""); setType(""); setInstitution("");
+    setInvested(0); setStartDate(""); setMaturityDate("");
+    setInterestRate(0); setCompoundingType(""); setSip(0);
+    setIsAddModalOpen(true);
+  };
+
+   // open modal to edit existing
+  const handleCardClick = (idx) => {
+    const inv = investments[idx];
+    setEditIndex(idx);
+    setName(inv.name);
+    setType(inv.type);
+    setInstitution(inv.institution);
+    setInvested(inv.invested);
+    setStartDate(inv.startDate);
+    setMaturityDate(inv.maturityDate);
+    setInterestRate(inv.interestRate);
+    setCompoundingType(inv.compoundingType);
+    setSip(inv.sip);
+    setIsAddModalOpen(true);
+  };
+
+  // called by modal onSave
+  const handleSave = (data) => {
+    if (editIndex === null) {
+      // add
+      setInvestments([...investments, data]);
+    } else {
+      // update
+      const copy = [...investments];
+      copy[editIndex] = data;
+      setInvestments(copy);
+    }
+    setIsAddModalOpen(false);
+  };
 
   // If user is not authenticated, show LoginRequired component
   // if (!isAuthenticated) {
@@ -161,32 +201,30 @@ const Investment = () => {
           </div>
 
           {/* Investment List */}
-          <div className="w-full p-3 flex flex-col items-center gap-5">
-            {/* Title Row */}
-            <div className="flex items-center h-[50px] text-white/50 p-3 w-[95%] font-semibold">
-              <div className="flex-1 text-center gap-1">
-                <div>Name (Type)</div>
-              </div>
-              <div className="flex-1 flex flex-col text-center">
-                <div>Invested</div> <div>Maturity</div>
-              </div>
-              <div className="flex-1 flex flex-col text-center">
-                <div>Start Date</div>
-                <div>Maturity Date</div>
-              </div>
-              <div className="flex-1 text-center">Interest Rate</div>
-              <div className="flex-1 text-center">Compounding</div>
-              <div className="flex-1 text-center">SIP</div>
+      <div className="col-span-4">
+        <div className="w-full p-3 flex flex-col items-center gap-5">
+          <div className="flex items-center h-[50px] text-white/50 p-3 w-[95%] font-semibold">
+            <div className="flex-1 text-center gap-1">
+              <div>Name (Type)</div>
             </div>
-
-            {/* Investment Cards */}
-            {investments.map((investment, index) => (
-              <div
-                onClick={()=>setIsAddModalOpen(true)}
-                key={index}
-                className="flex items-center text-white p-5 w-[95%] rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] transition-transform duration-300 ease-in-out hover:scale-102 hover:cursor-pointer"
-              >
-                <div className="flex-1 flex flex-col gap-1">
+            <div className="flex-1 flex flex-col text-center">
+              <div>Invested</div> <div>Maturity</div>
+            </div>
+            <div className="flex-1 flex flex-col text-center">
+              <div>Start Date</div>
+              <div>Maturity Date</div>
+            </div>
+            <div className="flex-1 text-center">Interest Rate</div>
+            <div className="flex-1 text-center">Compounding</div>
+            <div className="flex-1 text-center">SIP</div>
+          </div>
+          {investments.map((investment, idx) => (
+            <div
+              key={idx}
+              onClick={() => handleCardClick(idx)}
+              className="flex items-center text-white p-5 w-[95%] rounded-2xl to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] transition-transform duration-300 ease-in-out hover:scale-102 hover:cursor-pointer bg-gradient-to-b from-[#111125]"
+            >
+              <div className="flex-1 flex flex-col gap-1">
                   <div className="text-xl pl-5">{investment.name}</div>
                   <div className="pl-5">{investment.type}</div>
                 </div>
@@ -201,46 +239,37 @@ const Investment = () => {
                 <div className="flex-1 text-center text-sm">{investment.interestRate}%</div>
                 <div className="flex-1 text-center text-sm">{investment.compoundingType}</div>
                 <div className="flex-1 text-center text-blue-400 text-sm">₹{investment.sip}</div>
-              </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Floating Button and Modal */}
-      <button
-        className="fixed bottom-10 right-16 bg-[#85EFC4] text-black p-4 rounded-full shadow-lg hover:bg-[#62be99] hover:cursor-pointer transition duration-300 flex items-center justify-center"
-        onClick={() => setIsAddModalOpen(true)}
-      >
-        <Plus size={30} />
-      </button>
+        {/* Floating Add Button */}
+        <button
+          className="fixed bottom-10 right-16 bg-[#85EFC4] text-black p-4 rounded-full shadow-lg hover:bg-[#62be99] hover:cursor-pointer hover:scale-105 transition"
+          onClick={handleAddClick}
+        >
+          <Plus size={30} />
+        </button>
 
-      {/* Add Investment Modal */}
-      <Modal open={isAddModalOpen} setOpen={setIsAddModalOpen}>
-        <InvestmentAdd
-          name={name}
-          setName={setName}
-          type={type}
-          setType={setType}
-          institution={institution}
-          setInstitution={setInstitution}
-          invested={invested}
-          setInvested={setInvested}
-          maturity={maturity}
-          setMaturity={setMaturity}
-          startDate={startDate}
-          setStartDate={setStartDate}
-          maturityDate={maturityDate}
-          setMaturityDate={setMaturityDate}
-          interestRate={interestRate}
-          setInterestRate={setInterestRate}
-          compoundingType={compoundingType}
-          setCompoundingType={setCompoundingType}
-          sip={sip}
-          setSip={setSip}
-          onSave={addInvestment} // Pass the function to save the new investment
-        />
-      </Modal>
+        {/* Modal */}
+        <Modal open={isAddModalOpen} setOpen={setIsAddModalOpen}>
+          <InvestmentAdd
+            name={name} setName={setName}
+            type={type} setType={setType}
+            institution={institution} setInstitution={setInstitution}
+            invested={invested} setInvested={setInvested}
+            startDate={startDate} setStartDate={setStartDate}
+            maturityDate={maturityDate} setMaturityDate={setMaturityDate}
+            interestRate={interestRate} setInterestRate={setInterestRate}
+            compoundingType={compoundingType} setCompoundingType={setCompoundingType}
+            sip={sip} setSip={setSip}
+            onSave={handleSave}
+            isEdit={editIndex !== null}
+          />
+        </Modal>
+        </div>
+      </div>
     </div>
   );
 };
