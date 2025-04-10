@@ -70,7 +70,9 @@ const Login = () => {
           _id:data._id,
           token: data.token 
         }));
+
         navigate("/test"); // Redirect to dashboard
+        
       } else {
         alert(data.message || "Invalid email or password");
       }

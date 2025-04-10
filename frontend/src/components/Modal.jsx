@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 export default function Modal({ open, setOpen, children }) {
   if (!open) return null;
 
-
   //Escape key close
   useEffect(() => {
     const handleKeyDown = (e) => {

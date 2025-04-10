@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const InputBox = ({ label = "", placeholder = "", value, onChange, type = "text" }) => {
+const InputBox = ({
+  label = "",
+  placeholder = "",
+  value,
+  onChange,
+  type = "text",
+  options = [],
+}) => {
+  const [isCustom, setIsCustom] = useState(false);
+
   const handleChange = (e) => {
     let val = e.target.value;
 
@@ -19,17 +28,40 @@ const InputBox = ({ label = "", placeholder = "", value, onChange, type = "text"
   return (
     <div className="flex flex-col space-y-1 p-2 rounded-lg">
       <label className="text-lg font-medium text-white">{label}</label>
-      <motion.input
-        type={type === "date" ? "date" : "text"}
-        value={value || ""}
-        placeholder={value ? "" : placeholder}
-        className="p-2 border border-white text-white bg-transparent rounded-lg outline-none placeholder-white"
-        onChange={handleChange}
-        initial={{ scale: 1 }}
-        whileFocus={{ scale: 1.01 }}
-        transition={{ type: "spring", stiffness: 200 }}
-      />
-      {type === "percentage" && <span className="text-white font-medium">%</span>}
+      {type === "dropdown" && !isCustom ? (
+        <>
+          <select
+            value={value || ""}
+            onChange={(e) => {
+              if (e.target.value === "custom") {
+                setIsCustom(true);
+                onChange("");
+              } else {
+                onChange(e.target.value);
+              }
+            }}
+            className="p-2 border border-white text-white bg-transparent rounded-lg outline-none"
+          >
+            <option className="bg-[#030318]" value="" disabled>Select an option</option>
+            {options.map((opt, idx) => (
+              <option className="text-white bg-[#030318]" key={idx} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </>
+      ) : (
+        <motion.input
+          type={type === "date" ? "date" : "text"}
+          value={value || ""}
+          placeholder={value ? "" : placeholder}
+          className={`p-2 border border-white ${(type === "date") ? "bg-white text-black" : "bg-transparent text-white"} rounded-lg outline-none placeholder-white`}
+          onChange={handleChange}
+          initial={{ scale: 1 }}
+          whileFocus={{ scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        />
+      )}
     </div>
   );
 };

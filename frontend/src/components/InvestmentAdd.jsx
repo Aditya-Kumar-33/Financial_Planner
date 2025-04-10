@@ -1,32 +1,135 @@
-import React from "react";
+import React, { useState } from "react";
 import InputBox from "./InputBox";
 
-export default function InvestmentAdd({ 
-  name, setName, 
-  type, setType, 
-  institution, setInstitution, 
-  invested, setInvested, 
-  startDate, setStartDate, 
-  maturityDate, setMaturityDate, 
-  interestRate, setInterestRate, 
-  compoundingType, setCompoundingType, 
-  sip, setSip 
+export default function InvestmentAdd({
+  name,
+  setName,
+  type,
+  setType,
+  institution,
+  setInstitution,
+  invested,
+  setInvested,
+  startDate,
+  setStartDate,
+  maturityDate,
+  setMaturityDate,
+  interestRate,
+  setInterestRate,
+  compoundingType,
+  setCompoundingType,
+  sip,
+  setSip,
+  onSave
 }) {
+  // Define all major investment types
+  const investmentTypes = [
+    "Mutual Fund",
+    "Stocks",
+    "Bonds",
+    "Real Estate",
+    "Fixed Deposit",
+    "Gold",
+    "Provident Fund",
+    "SIP",
+    "Others",
+  ];
+
+  const compoundingTypes = ["Weekly", "Monthly", "Yearly"];
+
+  // Handle Save Button Click
+  const handleSave = () => {
+    const investmentData = {
+      name,
+      type,
+      institution,
+      invested,
+      startDate,
+      maturityDate,
+      interestRate,
+      compoundingType,
+      sip,
+    };
+    
+    console.log(investmentData);
+    onSave(investmentData);
+  };
 
   return (
-    <div className="p-5 text-white rounded-lg">
+    <div className="p-5 text-white rounded-lg flex flex-col items-center">
       <h1 className="text-xl font-semibold mb-4">Add your investment</h1>
-      <div className="grid grid-cols-3 gap-5">
-        <InputBox type="text" label="Investment Name" placeholder="Enter name" value={name} onChange={setName} />
-        <InputBox type="text" label="Investment Type" placeholder="e.g., Mutual Fund" value={type} onChange={setType} />
-        <InputBox type="text" label="Institution" placeholder="e.g., SBI" value={institution} onChange={setInstitution} />
-        <InputBox type="currency" label="Invested Amount" placeholder="₹ 0" value={invested} onChange={setInvested} />
-        <InputBox type="date" label="Start Date" value={startDate} onChange={setStartDate} />
-        <InputBox type="date" label="Maturity Date" value={maturityDate} onChange={setMaturityDate} />
-        <InputBox type="percentage" label="Interest Rate (p.a.)" placeholder="0" value={interestRate} onChange={setInterestRate} />
-        <InputBox type="text" label="Compounding Type" placeholder="e.g., Monthly" value={compoundingType} onChange={setCompoundingType} />
-        <InputBox type="currency" label="SIP Amount" placeholder="₹ 0" value={sip} onChange={setSip} />
+      <div className="grid grid-cols-3 gap-5 w-full">
+        <InputBox
+          type="text"
+          label="Investment Name"
+          placeholder="Enter name"
+          value={name}
+          onChange={setName}
+        />
+        <InputBox
+          type="dropdown"
+          label="Investment Type"
+          value={type}
+          onChange={setType}
+          options={investmentTypes}
+        />
+        <InputBox
+          type="text"
+          label="Institution"
+          placeholder="e.g., SBI"
+          value={institution}
+          onChange={setInstitution}
+        />
+        <InputBox
+          type="currency"
+          label="Invested Amount"
+          placeholder="₹ 0"
+          value={invested}
+          onChange={setInvested}
+        />
+        <InputBox
+          type="date"
+          label="Start Date"
+          value={startDate}
+          onChange={setStartDate}
+        />
+        <InputBox
+          type="date"
+          label="Maturity Date"
+          value={maturityDate}
+          onChange={setMaturityDate}
+        />
+        <InputBox
+          type="percentage"
+          label="Interest Rate % (p.a.)"
+          placeholder="0"
+          value={interestRate}
+          onChange={setInterestRate}
+        />
+        <InputBox
+          type="dropdown"
+          label="Compounding Type"
+          placeholder="Monthly"
+          value={compoundingType}
+          onChange={setCompoundingType}
+          options={compoundingTypes}
+        />
+        <InputBox
+          type="currency"
+          label="SIP Amount"
+          placeholder="₹ 0"
+          value={sip}
+          onChange={setSip}
+        />
       </div>
+
+      {/* Save Button */}
+      <button
+        onClick={handleSave}
+        className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300"
+      >
+        Save Investment
+      </button>
     </div>
   );
 }
