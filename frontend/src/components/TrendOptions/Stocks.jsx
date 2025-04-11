@@ -1,4 +1,5 @@
 import React from 'react'
+import Nifty50TrendGraph from '../../pages/atest'
 
 export default function Stocks({item}) {
   return (
@@ -45,6 +46,7 @@ export function StocksExpanded({item}) {
           </div>
         </div>
       </div>
+      <Nifty50TrendGraph/>
     </>
   )
 }

@@ -153,13 +153,13 @@ const Savings = () => {
   const COLORS = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"];
 
   // If user is not authenticated, show LoginRequired component
-  if (!isAuthenticated) {
-    return (
-      <div className="w-screen h-screen bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318]">
-        <LoginRequired />;
-      </div>
-    )  
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="w-screen h-screen bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318]">
+  //       <LoginRequired />;
+  //     </div>
+  //   )  
+  // }
 
   return (
     <div
