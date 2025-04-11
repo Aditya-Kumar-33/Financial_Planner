@@ -16,7 +16,6 @@ const NavBar = () => {
   const buttonData = [
     { name: "Savings", path: "/savings" },
     { name: "Calculator", path: "/calculator", hasSubmenu: true },
-    { name: "Expense", path: "/expense" },
     { name: "Investment", path: "/investment" },
     { name: "Facts", path: "/facts" }
   ];

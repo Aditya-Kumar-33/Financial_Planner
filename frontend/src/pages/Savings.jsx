@@ -7,6 +7,7 @@ import ButtonPattern from "../components/Buttons/ButtonPattern";
 import axios from "axios";
 import DateSelector from "../components/DateSelector";
 import TypeToggle from "../components/Buttons/TypeToggle";
+import LoginRequired from "../components/LoginRequired"
 
 
 const Savings = () => {
@@ -26,6 +27,7 @@ const Savings = () => {
   const [balance, setBalance] = useState(0);
 
   const [selectedType, setSelectedType] = useState("Expense");
+  const [isAuthenticated, setAuthenticated] = useState(true);
 
   const user = JSON.parse(localStorage.getItem("user"));
 

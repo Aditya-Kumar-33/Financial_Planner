@@ -1,9 +1,10 @@
 import React from "react";
 import BackGround from "../components/BackGround";
+import InvestmentComponent from "../components/Home/InvestmentComponent";
 
 const Home = () => {
   return (
-    <div className="relative h-screen ">
+    <div className="relative h-fit ">
       <BackGround />
 
       {/* Container over bg */}
@@ -19,7 +20,7 @@ const Home = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="relative h-full w-full">
+        <div className="relative h-screen w-full">
             <div className="absolute right-[10%] top-[10%] w-1/3 h-1/4 rounded-2xl bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
                 
             </div>
@@ -31,7 +32,7 @@ const Home = () => {
             </div>
             <div className="absolute left-[10%] top-[55%] w-1/3 h-1/4 rounded-2xl 
             bg-gradient-to-b from-[#111125] to-transparent shadow-[0_-4px_10px_rgba(255,255,255,0.3)] text-white">
-                
+                <InvestmentComponent/>
             </div>
 
         </div>
