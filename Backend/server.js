@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const savingsRoutes = require('./routes/savingsRoutes');
+const investmentRoutes = require('./routes/investmentRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ connectDB();
 // Routes
 app.use("/user", userRoutes);
 app.use("/savings", savingsRoutes); 
+app.use("/investment",investmentRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

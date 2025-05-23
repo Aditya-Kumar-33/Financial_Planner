@@ -36,7 +36,6 @@ export default function FinanceManagement() {
             className="cursor-pointer"/>
           </div>
         </div>
-        
       </div>
 
       <div className="w-1/2 h-full p-4 flex justify-end items-center flex-col">

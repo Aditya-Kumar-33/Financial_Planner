@@ -1,40 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
 
-const AnimatedButton = ({ children, to, text, color, color2, text1, text2, border, ...props }) => {
-    const [hovered, setHovered] = useState(false);
-    const [textWidth, setTextWidth] = useState(0);
-    const ref = useRef(null);
-    const navigate = useNavigate();
+const LoginButton = () => {
 
-    // Get text width for proper animation
-    useEffect(() => {
-        if (ref.current) {
-            setTextWidth(ref.current.offsetWidth);
-        }
-    }, [hovered]);
 
-    return (
-        <button
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            onClick={() => navigate(to)}
-            className={`relative flex items-center px-4 py-2 cursor-pointer rounded-lg transition-all duration-500 ease-out ${border ? border : ""}  ${hovered ? `${color2 ? color2 : "bg-transparent"}` : `${color ? `${color}` : "bg-transparent"}` } `}
-            {...props}
-        >
-            {/* Static Text */}
-            <span ref={ref} className= {`${hovered ? `${text2 ? text2 : "text-white"}` : `${text1 ? `text-${text1}` : "text-white"}` }  transition-all font-medium`}>
-                {text}
-            </span>
-
-            {/* Sliding Icon (Children) */}
-            <div
-                className= {`transition-all ${hovered ? "opacity-100 translate-x-1" : "opacity-0" } duration-300 ease-out`}
-            >
-                {children}
-            </div>
-        </button>
-    );
+  return (
+    <button
+      className="group relative flex items-center gap-1 rounded-xl bg-[#62be99] px-3.5 py-2 
+      font-bold text-white transition-all duration-200 hover:bg-[#111]"
+    >
+      Login
+      <div className="flex items-center justify-center">
+        <div className="relative h-0.5 w-2.5 bg-[#62be99] transition-all duration-200 group-hover:bg-white">
+          <div className="absolute -top-0.5 right-0.75 h-1.5 w-1.5 rotate-45 
+          border-r-2 border-t-2 border-white transition-all duration-200 group-hover:right-0">
+          </div>
+        </div>
+      </div>
+    </button>
+  );
 };
 
-export default AnimatedButton;
+export default LoginButton;

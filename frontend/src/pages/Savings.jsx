@@ -20,7 +20,9 @@ const Savings = () => {
 
   // Data states
   const [savings, setSavings] = useState([]); //complete list
+
   const [filteredSavings, setFilteredSavings] = useState([]); //pattern based list
+  
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState(0);
   const [balance, setBalance] = useState(0);

@@ -207,7 +207,7 @@ export default function SavingsModal({ open, setOpen, onSubmit }) {
             </div>
 
             {/* Type */}
-            <div className="mb-4">
+            <div className="mb-4"> 
               <label className="block text-white mb-2">
                 Type*
               </label>
