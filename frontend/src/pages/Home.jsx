@@ -1,16 +1,22 @@
 import React from "react";
 import BackGround from "../components/BackGround";
+import InvestmentComponent from "../components/Home/InvestmentComponent";
 import FinanceManagement from "../components/HomeInfo";
 
 const Home = () => {
   return (
-    <div className="relative h-screen ">
+    <div className="relative h-fit ">
       <BackGround />
 
       {/* Container over bg */}
-      <div className="absolute inset-0 flex flex-col h-[200vh]">
+      <div className="absolute inset-0 flex flex-col h-[200vh] items-center font-grotesk">
         <FinanceManagement/>
+        <div className="">
+          <InvestmentComponent/>
+        </div>
       </div>
+
+      
     </div>
   );
 };
