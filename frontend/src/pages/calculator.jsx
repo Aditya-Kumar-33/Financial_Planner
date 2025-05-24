@@ -54,11 +54,11 @@ const Calculator = () => {
   return (
     <div className="w-full h-screen pt-20 grid grid-rows-[5%,95%] 
     bg-gradient-to-b from-[#24263C] via-[#121323] to-[#030318] text-white font-dm-sans">
-      <div className="h-full w-full flex justify-center items-center gap-[30px]">
+      <div className="h-full w-full flex justify-center pt-7 items-center gap-[30px]">
         <ButtonCalc selectedTarget={selectedTarget} setSelectedTarget={setSelectedTarget} />
       </div>
 
-      <div className="h-full w-full flex gap-[20px] p-[30px] pt-[0px] items-center">
+      <div className="h-full w-full flex gap-[20px] p-[30px] pt-[20px] items-center">
         <div className="w-1/2 h-full rounded-4xl flex flex-col items-center justify-evenly py-2">
           <ButtonWMY selectedPattern={selectedPattern} setSelectedPattern={setSelectedPattern} />
           

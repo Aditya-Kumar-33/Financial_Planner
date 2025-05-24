@@ -15,7 +15,6 @@ const Home = () => {
           <InvestmentComponent/>
         </div>
       </div>
-
       
     </div>
   );
